@@ -1,0 +1,70 @@
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsthm,amsmath,amssymb,amstext} 
+\usepackage{booktabs}
+\usepackage{array}
+
+\usepackage{nicefrac}
+\usepackage{caption}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{lscape}
+\usepackage{placeins}
+\usepackage{colortbl}
+\usepackage{dsfont}
+\usepackage{multirow}
+\usepackage{listings}
+\usepackage{adjustbox}
+\usepackage{setspace}
+
+
+%% load any required packages here
+
+\begin{document}
+
+
+
+
+% !TeX root = RJwrapper.tex
+% !TeX root = RJwrapper.tex
+\title{Automatic Exploration of Machine Learning Experiments on OpenML}
+\author{by Daniel Kühn, Philipp Probst, Janek Thomas and Bernd Bischl}
+
+\maketitle
+
+\section{
+Abstract
+}
+
+\clearpage
+\section{Introduction}
+
+\subsection{Description of the bot}
+
+The bot essentially does the following:
+
+\begin{itemize}
+\item Make experiments with machine learning algorithms with random hyperparameters on 
+datasets of the OpenML database
+\item Save all the results in the OpenML database
+\item Make the results accessible for anybody
+\item Which analysis could potentially be done with the data?
+\end{itemize}
+
+<<echo = FALSE, message = FALSE>>=
+library(mlr)
+ 1 + 2
+ @
+
+\section{Literature}
+Other related projects and papers (e.g. AutoWeka)
+
+\section{to-Do}
+\begin{itemize}
+\item Think about the title
+\item Put the package on CRAN
+\item Put the database on e.g. figshare
+\end{itemize}
+\end{document}
