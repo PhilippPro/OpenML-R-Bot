@@ -24,13 +24,10 @@
 
 \begin{document}
 
-
-
-
 % !TeX root = RJwrapper.tex
 % !TeX root = RJwrapper.tex
 \title{Automatic Exploration of Machine Learning Experiments on OpenML}
-\author{by Daniel Kühn, Philipp Probst, Janek Thomas and Bernd Bischl}
+\author{by Daniel Kühn*, Philipp Probst*, Janek Thomas and Bernd Bischl}
 
 \maketitle
 
@@ -38,19 +35,72 @@
 Abstract
 }
 
-\clearpage
 \section{Introduction}
 
-\subsection{Description of the bot}
+In this paper we describe how experiments with the random bot were executed on OpenML (cite XXX). 
 
-The bot essentially does the following:
+\section{Description of the bot}
+
+We specified six machine learning algorithms with their specific hyperparameters.
+We choosed the six supervised learning algorithms elastic net (\texttt{glmnet} package), 
+decision tree (\texttt{rpart}), k-nearest neighbors (\texttt{kknn}), 
+support vector machines (\texttt{svm}), random forest (\texttt{ranger}) 
+and gradient boosting (\texttt{xgboost}). They represent algorithms that are used very 
+often and cover a broad range of different types of algorithms. 
+The algorithms with their specific hyperparameters and hyperparameter constraints can 
+be found in table XXX. Some hyperparameters are transformed after they have been drawn, 
+for example to get more results in regions where we expect more interesting results. 
+
+Furthermore we choosed the classification tasks (datasets) from the OpenML100 
+Benchmarksuite (cite XXX) as benchmark datasets, only including datasets without 
+missing data. The datasets with their specific characteristics can be found in table XXX. 
+
+The bot then essentially does the following:
+\begin{enumerate}
+\item Randomly draw one of the six algorithms
+\item Randomly draw a hyperparameter setting of the chosen algorithms
+\item Randomly draw one of the benchmark datasets
+\item Download the dataset from OpenML
+\item Benchmark the specified algorithm on the specified dataset with 10-fold cross-validation
+\item Upload the benchmark results with time measurements to OpenML with the 
+identification tag \texttt{mlrRandomBot}
+\end{enumerate}
+
+The code for the bot can be found on github (XXX), the packages \texttt{mlr} (CITE XXX) 
+and \texttt{OpenML} (CITE XXX) were used for the whole process. 
+
+In total we executed around 6 millions (XXX) runs of the random bot on different 
+server platforms (OH NO!) like Azure.
+
+\section{Access to the benchmark results}
+
+The results of the benchmarks can be accessed in different ways:
 
 \begin{itemize}
-\item Make experiments with machine learning algorithms with random hyperparameters on 
-datasets of the OpenML database
-\item Save all the results in the OpenML database
-\item Make the results accessible for anybody
-\item Which analysis could potentially be done with the data?
+\item The easiest way to access them is to go to the figshare repository (XXX) and
+download the .RData or the .csv file. 
+\end{itemize}
+
+DISTRIBUTION OF HYPERPARAMETERS AND DATASETS
+
+\section{Potential usage of the results}
+
+The results can be used to discover effects of the hyperparameters on performances 
+of the different algorithms on different datasets. 
+
+This can be used to:
+\begin{itemize}
+\item Find good defaults for the algorithms that work well on many datasets
+\item Measure differences between the algorithms
+\item Optimize tuning algorithms:
+\begin{itemize}
+\item Measure the tunability of algorithms and find out which parameters should be tuned
+\item Use the results to get priors for tuning algorithms - in which regions of the 
+hyperparameter space should be searched with higher probability?
+\end{itemize}
+\item Meta-Learning: Train models that based on dataset characteristics and 
+possibly time limitations propose hyperparameter settings that perform good 
+on a specific dataset
 \end{itemize}
 
 <<echo = FALSE, message = FALSE>>=
