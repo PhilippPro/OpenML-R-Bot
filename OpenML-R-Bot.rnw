@@ -81,6 +81,8 @@ The results of the benchmarks can be accessed in different ways:
 download the .RData or the .csv file. 
 \end{itemize}
 
+\section{Validity of the results}
+
 DISTRIBUTION OF HYPERPARAMETERS AND DATASETS
 
 \section{Potential usage of the results}
