@@ -53,7 +53,8 @@ for example to get more results in regions where we expect more interesting resu
 
 Furthermore we choosed the classification tasks (datasets) from the OpenML100 
 Benchmarksuite (cite XXX) as benchmark datasets, only including datasets without 
-missing data. The datasets with their specific characteristics can be found in table XXX. 
+missing data and with binary outcome.
+The datasets with their specific characteristics can be found in table XXX. 
 
 The bot then essentially does the following:
 \begin{enumerate}
