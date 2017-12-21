@@ -1,9 +1,23 @@
-\documentclass[a4paper]{article}
+
+
+\documentclass{article}
 \usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+
 \usepackage{amsthm,amsmath,amssymb,amstext} 
 \usepackage{booktabs}
 \usepackage{array}
+ 
+\usepackage{natbib}
+\bibliographystyle{abbrvnat}
+\usepackage{hyperref}
+\hypersetup{%
+  colorlinks=true, 
+  breaklinks=true, 
+  urlcolor=blue, 
+  linkcolor=blue, 
+  citecolor=blue, 
+}
 
 \usepackage{nicefrac}
 \usepackage{caption}
@@ -20,8 +34,6 @@
 \usepackage{setspace}
 
 
-%% load any required packages here
-
 \begin{document}
 
 % !TeX root = RJwrapper.tex
@@ -37,7 +49,7 @@ Abstract
 
 \section{Introduction}
 
-In this paper we describe how experiments with the random bot were executed on OpenML (cite XXX). 
+In this paper we describe how experiments with the random bot were executed on OpenML \citep{OpenML2013}. 
 
 \section{Description of the bot}
 
@@ -48,15 +60,51 @@ support vector machines (\texttt{svm}), random forest (\texttt{ranger})
 and gradient boosting (\texttt{xgboost}). They represent algorithms that are used very 
 often and cover a broad range of different types of algorithms. 
 The algorithms with their specific hyperparameters and hyperparameter constraints can 
-be found in table XXX. Some hyperparameters are transformed after they have been drawn, 
+be found in table \ref{tab:parameter}. Some hyperparameters are transformed after they have been drawn, 
 for example to get more results in regions where we expect more interesting results. 
 
+<<parameter, echo = FALSE, results="asis",  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
+library(xtable)
+library(mlr)
+load("./data/parameter_settings.RData")
+df_total = data.frame()
+index = numeric()
+for (i in 1:6) {
+  df = do.call(rbind, lrn.par.set[[i]]$param.set$pars)[,c("id", "type", "lower", "upper", "trafo")]
+  if (is.null(nrow(df))) {
+    df$trafo = NA 
+    df = data.frame(df)
+    colnames(df)[1] = "hyperparameter"
+  } else {
+    if (!all(data.frame(df)$trafo == "NULL")) {
+      df = data.frame(df)
+      df$trafo = lapply(df$trafo, function(x) if (!is.null(x)) paste0("$", deparse(x)[2], "$"))
+      df$type[df$type == "numericvector"] = "numeric"
+    } else { 
+      df = data.frame(df)
+      #df = subset(df, select = -trafo) 
+    }
+    colnames(df)[1] = "hyperparameter"
+    df[df=="NULL"] = NA
+  }
+  #print(df)
+  algorithm = c(getLearnerShortName(lrn.par.set[[i]]$learner), rep("", nrow(df)-1))
+  df = cbind(algorithm, df)
+  index[i] = nrow(df)
+  df_total = rbind(df_total, df)
+}
+#df_total
+  print(xtable(df_total, caption = "Hyperparameters of the algorithms", digits = 0, label = "tab:parameter"), 
+    NA.string = "-",sanitize.text.function=function(x){gsub("_", "\\_",x, fixed = TRUE)}, 
+    include.rownames=FALSE, hline.after = c(0, cumsum(index)))
+@
+
 Furthermore we choosed the classification tasks (datasets) from the OpenML100 
-Benchmarksuite (cite XXX) as benchmark datasets, only including datasets without 
-missing data and with binary outcome.
+Benchmarksuite \citep{Bischl2017} as benchmark datasets, only including datasets without 
+missing data and with binary outcome resulting in 76 datasets.
 The datasets with their specific characteristics can be found in table XXX. 
 
-The bot then essentially does the following:
+Following the search paradigm of random search the bot iterativel executes several steps:
 \begin{enumerate}
 \item Randomly draw one of the six algorithms
 \item Randomly draw a hyperparameter setting of the chosen algorithms
@@ -78,8 +126,8 @@ server platforms (OH NO!) like Azure.
 The results of the benchmarks can be accessed in different ways:
 
 \begin{itemize}
-\item The easiest way to access them is to go to the figshare repository (XXX) and
-download the .RData or the .csv file. 
+\item The easiest way to access them is to go to the figshare repository \citep{Probst2017} and
+download the .csv files. 
 \end{itemize}
 
 \section{Validity of the results}
@@ -120,4 +168,7 @@ Other related projects and papers (e.g. AutoWeka)
 \item Put the package on CRAN
 \item Put the database on e.g. figshare
 \end{itemize}
+
+\bibliography{bot}
+ 
 \end{document}
