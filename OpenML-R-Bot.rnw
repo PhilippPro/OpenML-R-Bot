@@ -118,8 +118,8 @@ identification tag \texttt{mlrRandomBot}
 The code for the bot can be found on github (XXX), the packages \texttt{mlr} (CITE XXX) 
 and \texttt{OpenML} (CITE XXX) were used for the whole process. 
 
-In total we executed around 6 millions (XXX) runs of the random bot on different 
-server platforms (OH NO!) like Azure.
+In total more than 6 millions (XXX) runs of the random bot on different 
+server platforms (OH NO!) like Azure were executed.
 
 \section{Access to the benchmark results}
 
