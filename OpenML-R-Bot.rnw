@@ -115,8 +115,8 @@ Following the search paradigm of random search the bot iterativel executes sever
 identification tag \texttt{mlrRandomBot}
 \end{enumerate}
 
-The code for the bot can be found on github (XXX), the packages \texttt{mlr} (CITE XXX) 
-and \texttt{OpenML} (CITE XXX) were used for the whole process. 
+The code for the bot can be found on github (\url{https://github.com/ja-thomas/OMLbots}), the R packages \texttt{mlr} \citep{Bischl2016} 
+and \texttt{OpenML} \citep{Casalicchio2017} were used for the whole process. 
 
 In total more than 6 millions (XXX) runs of the random bot on different 
 server platforms (OH NO!) like Azure were executed.
