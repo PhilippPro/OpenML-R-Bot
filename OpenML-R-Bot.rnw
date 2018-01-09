@@ -35,6 +35,7 @@
 
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 
 % !TeX root = RJwrapper.tex
 % !TeX root = RJwrapper.tex
@@ -48,6 +49,9 @@ Abstract
 }
 
 \section{Introduction}
+
+When applying machine learning on real world datasets, users have to choose from a large selection of different machine learning algorithms with many of these algorithms offering a set of hyperparameters, which can be specified by the user and can have a significant influence on the performance of the algorithm. Since there is no free lunch in algorithm selection and one can not expect one algorithm to outperform all the others \citep{Wolpert2001}, a crucial question practitioners have to face on a daily basis therefore is the selection of the "right" algorithm with the "right" hyperparameters for a given dataset. Several approaches like meta-learning or bayesian optimization [#FIXME: add more? + citations] exist for solving this issue. While showing promising results, bayesian optimization and other hyperparameter optimization techniques require a large overhead. Meta-learning has shown to decrease this overhead \citep{Feurer2015}, but no large and open source meta-learning datasets exist to date.
+
 
 In this paper we describe how experiments with the random bot were executed on OpenML \citep{OpenML2013}. 
 
@@ -63,41 +67,7 @@ The algorithms with their specific hyperparameters and hyperparameter constraint
 be found in table \ref{tab:parameter}. Some hyperparameters are transformed after they have been drawn, 
 for example to get more results in regions where we expect more interesting results. 
 
-<<parameter, echo = FALSE, results="asis",  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
-library(xtable)
-library(mlr)
-load("./data/parameter_settings.RData")
-df_total = data.frame()
-index = numeric()
-for (i in 1:6) {
-  df = do.call(rbind, lrn.par.set[[i]]$param.set$pars)[,c("id", "type", "lower", "upper", "trafo")]
-  if (is.null(nrow(df))) {
-    df$trafo = NA 
-    df = data.frame(df)
-    colnames(df)[1] = "hyperparameter"
-  } else {
-    if (!all(data.frame(df)$trafo == "NULL")) {
-      df = data.frame(df)
-      df$trafo = lapply(df$trafo, function(x) if (!is.null(x)) paste0("$", deparse(x)[2], "$"))
-      df$type[df$type == "numericvector"] = "numeric"
-    } else { 
-      df = data.frame(df)
-      #df = subset(df, select = -trafo) 
-    }
-    colnames(df)[1] = "hyperparameter"
-    df[df=="NULL"] = NA
-  }
-  #print(df)
-  algorithm = c(getLearnerShortName(lrn.par.set[[i]]$learner), rep("", nrow(df)-1))
-  df = cbind(algorithm, df)
-  index[i] = nrow(df)
-  df_total = rbind(df_total, df)
-}
-#df_total
-  print(xtable(df_total, caption = "Hyperparameters of the algorithms", digits = 0, label = "tab:parameter"), 
-    NA.string = "-",sanitize.text.function=function(x){gsub("_", "\\_",x, fixed = TRUE)}, 
-    include.rownames=FALSE, hline.after = c(0, cumsum(index)))
-@
+
 
 Furthermore we choosed the classification tasks (datasets) from the OpenML100 
 Benchmarksuite \citep{Bischl2017} as benchmark datasets, only including datasets without 
@@ -154,10 +124,6 @@ possibly time limitations propose hyperparameter settings that perform good
 on a specific dataset
 \end{itemize}
 
-<<echo = FALSE, message = FALSE>>=
-library(mlr)
- 1 + 2
- @
 
 \section{Literature}
 Other related projects and papers (e.g. AutoWeka)
