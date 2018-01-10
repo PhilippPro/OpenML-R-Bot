@@ -51,6 +51,8 @@ Abstract
 
 In this paper we describe how experiments with the random bot were executed on OpenML \citep{OpenML2013}. 
 
+Other related projects and papers (e.g. AutoWeka)
+
 \section{Description of the bot}
 
 We specified six machine learning algorithms with their specific hyperparameters.
@@ -104,10 +106,10 @@ Benchmarksuite \citep{Bischl2017} as benchmark datasets, only including datasets
 missing data and with binary outcome resulting in 76 datasets.
 The datasets with their specific characteristics can be found in table XXX. 
 
-Following the search paradigm of random search the bot iterativel executes several steps:
+Following the search paradigm of random search the bot iteratively executes several steps:
 \begin{enumerate}
 \item Randomly draw one of the six algorithms
-\item Randomly draw a hyperparameter setting of the chosen algorithms
+\item Randomly draw a hyperparameter setting of the chosen algorithm
 \item Randomly draw one of the benchmark datasets
 \item Download the dataset from OpenML
 \item Benchmark the specified algorithm on the specified dataset with 10-fold cross-validation
@@ -154,19 +156,11 @@ possibly time limitations propose hyperparameter settings that perform good
 on a specific dataset
 \end{itemize}
 
-<<echo = FALSE, message = FALSE>>=
-library(mlr)
- 1 + 2
- @
-
-\section{Literature}
-Other related projects and papers (e.g. AutoWeka)
-
 \section{to-Do}
 \begin{itemize}
 \item Think about the title
-\item Put the package on CRAN
-\item Put the database on e.g. figshare
+\item Weakness: Dimension is too high, e.g. for xgboost. The best regions are not explored enough. 
+Maybe add later. 
 \end{itemize}
 
 \bibliography{bot}
