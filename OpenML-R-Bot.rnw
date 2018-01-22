@@ -67,7 +67,7 @@ for example to get more results in regions where we expect more interesting resu
 
 <<parameter, echo = FALSE, results="asis",  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
 library(xtable)
-library(mlr)
+suppressWarnings(library(mlr))
 load("./data/parameter_settings.RData")
 df_total = data.frame()
 index = numeric()
@@ -104,7 +104,22 @@ for (i in 1:6) {
 Furthermore we choosed the classification tasks (datasets) from the OpenML100 
 Benchmarksuite \citep{Bischl2017} as benchmark datasets, only including datasets without 
 missing data and with binary outcome resulting in 76 datasets.
-The datasets with their specific characteristics can be found in table XXX. 
+The datasets with their specific characteristics can be found in table \ref{tab:data}. 
+
+<<datasets, echo = FALSE, results="asis",  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
+  library(OpenML)
+  tasks = listOMLTasks(number.of.classes = 2L, number.of.missing.values = 0, 
+    data.tag = "study_14", estimation.procedure = "10-fold Crossvalidation")
+  tasks = tasks[, c("task.id", "name", "number.of.instances", "number.of.features", "majority.class.size")]
+  tasks$majority.class.size = tasks$majority.class.size / tasks$number.of.instances
+  colnames(tasks) = c("Task_id", "Name", "nObs", "nFeat", "MajPerc")
+  
+  load("./data/nr_results.RData")
+  
+  nr_results[,which(!colnames(nr_results) %in% sort(tasks$Task_id))]
+  
+  print(xtable(tasks, caption = "Included datasets"), digits = 0, label = "tab:data", include.rownames=FALSE, size = "scriptsize")
+@
 
 Following the search paradigm of random search the bot iteratively executes several steps:
 \begin{enumerate}
