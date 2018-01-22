@@ -126,7 +126,8 @@ The datasets with their specific characteristics can be found in table \ref{tab:
   tasks = cbind(tasks, t(nr_results))
   colnames(tasks)[5:10] = c("glmnet", "rpart", "kknn", "svm", "ranger", "xgboost")
   
-  print(xtable(tasks, caption = "Included datasets", digits = 0), digits = 0, label = "tab:data", include.rownames=FALSE, size = "scriptsize")
+  print(xtable(tasks, caption = "Included datasets, number of observations (nObs), 
+    number of features (nFeat) and number of runs of each algorithm", digits = 0), digits = 0, label = "tab:data", include.rownames=FALSE, size = "scriptsize")
 @
 
 Following the search paradigm of random search the bot iteratively executes several steps:
