@@ -55,6 +55,8 @@ When applying machine learning on real world datasets, users have to choose from
 
 In this paper we describe how experiments with the random bot were executed on OpenML \citep{OpenML2013}. 
 
+Other related projects and papers (e.g. AutoWeka)
+
 \section{Description of the bot}
 
 We specified six machine learning algorithms with their specific hyperparameters.
@@ -67,17 +69,75 @@ The algorithms with their specific hyperparameters and hyperparameter constraint
 be found in table \ref{tab:parameter}. Some hyperparameters are transformed after they have been drawn, 
 for example to get more results in regions where we expect more interesting results. 
 
-
+<<parameter, echo = FALSE, results="asis",  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
+library(xtable)
+suppressWarnings(library(mlr))
+load("./data/parameter_settings.RData")
+df_total = data.frame()
+index = numeric()
+for (i in 1:6) {
+  df = do.call(rbind, lrn.par.set[[i]]$param.set$pars)[,c("id", "type", "lower", "upper", "trafo")]
+  if (is.null(nrow(df))) {
+    df$trafo = NA 
+    df = data.frame(df)
+    colnames(df)[1] = "hyperparameter"
+  } else {
+    if (!all(data.frame(df)$trafo == "NULL")) {
+      df = data.frame(df)
+      df$trafo = lapply(df$trafo, function(x) if (!is.null(x)) paste0("$", deparse(x)[2], "$"))
+      df$type[df$type == "numericvector"] = "numeric"
+    } else { 
+      df = data.frame(df)
+      #df = subset(df, select = -trafo) 
+    }
+    colnames(df)[1] = "hyperparameter"
+    df[df=="NULL"] = NA
+  }
+  #print(df)
+  algorithm = c(getLearnerShortName(lrn.par.set[[i]]$learner), rep("", nrow(df)-1))
+  df = cbind(algorithm, df)
+  index[i] = nrow(df)
+  df_total = rbind(df_total, df)
+}
+#df_total
+  print(xtable(df_total, caption = "Hyperparameters of the algorithms", digits = 0, label = "tab:parameter"), 
+    NA.string = "-",sanitize.text.function=function(x){gsub("_", "\\_",x, fixed = TRUE)}, 
+    include.rownames=FALSE, hline.after = c(0, cumsum(index)))
+@
 
 Furthermore we choosed the classification tasks (datasets) from the OpenML100 
 Benchmarksuite \citep{Bischl2017} as benchmark datasets, only including datasets without 
 missing data and with binary outcome resulting in 76 datasets.
-The datasets with their specific characteristics can be found in table XXX. 
+The datasets with their specific characteristics can be found in table \ref{tab:data}. 
 
-Following the search paradigm of random search the bot iterativel executes several steps:
+<<datasets, echo = FALSE, results="asis",  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
+  library(OpenML)
+  tasks = listOMLTasks(number.of.classes = 2L, number.of.missing.values = 0, 
+    data.tag = "study_14", estimation.procedure = "10-fold Crossvalidation")
+  tasks = tasks[, c("task.id", "name", "number.of.instances", "number.of.features")] 
+  #tasks$majority.class.size = tasks$majority.class.size / tasks$number.of.instances
+  colnames(tasks) = c("Task_id", "Name", "nObs", "nFeat")
+  
+  load("./data/nr_results.RData")
+  
+  nr_results = nr_results[,which(colnames(nr_results) %in% sort(tasks$Task_id))]
+  # delete these results from the database?
+  # musk with easy perfect classification and two test datasets
+  tasks = tasks[which(sort(tasks$Task_id) %in% colnames(nr_results)), ]
+  # no results for some datasets
+  tasks = tasks[order(tasks$Task_id),]
+  #tasks$Task_id == colnames(nr_results)
+  tasks = cbind(tasks, t(nr_results))
+  colnames(tasks)[5:10] = c("glmnet", "rpart", "kknn", "svm", "ranger", "xgboost")
+  
+  print(xtable(tasks, caption = "Included datasets, number of observations (nObs), 
+    number of features (nFeat) and number of runs of each algorithm", digits = 0, label = "tab:data"), digits = 0, include.rownames=FALSE, size = "scriptsize")
+@
+
+Following the search paradigm of random search the bot iteratively executes several steps:
 \begin{enumerate}
 \item Randomly draw one of the six algorithms
-\item Randomly draw a hyperparameter setting of the chosen algorithms
+\item Randomly draw a hyperparameter setting of the chosen algorithm
 \item Randomly draw one of the benchmark datasets
 \item Download the dataset from OpenML
 \item Benchmark the specified algorithm on the specified dataset with 10-fold cross-validation
@@ -124,15 +184,14 @@ possibly time limitations propose hyperparameter settings that perform good
 on a specific dataset
 \end{itemize}
 
-
 \section{Literature}
 Other related projects and papers (e.g. AutoWeka)
 
 \section{to-Do}
 \begin{itemize}
 \item Think about the title
-\item Put the package on CRAN
-\item Put the database on e.g. figshare
+\item Weakness: Dimension is too high, e.g. for xgboost. The best regions are not explored enough. 
+Maybe add later. 
 \end{itemize}
 
 \bibliography{bot}
