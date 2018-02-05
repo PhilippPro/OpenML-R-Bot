@@ -44,18 +44,13 @@
 
 \maketitle
 
-\section{
-Abstract
-}
+\section*{Abstract}
+For any machine learning problem it is essential to have the right dataset. Meta-learning is a branch of machine learning, that focuses on hyperparameter optimization of machine learning algorithms. To date no large, open datset exists to support and benchmark meta-learning approaches. With this work we provide one such dataset for six different machine learning algorithms, which not only can be used for meta-learning but also for the better understanding of the explored hyperparameter space of these algorithms. 
 
 \section{Introduction}
 
-When applying machine learning on real world datasets, users have to choose from a large selection of different machine learning algorithms with many of these algorithms offering a set of hyperparameters, which can be specified by the user and can have a significant influence on the performance of the algorithm. Since there is no free lunch in algorithm selection and one can not expect one algorithm to outperform all the others \citep{Wolpert2001}, a crucial question practitioners have to face on a daily basis therefore is the selection of the "right" algorithm with the "right" hyperparameters for a given dataset. Several approaches like meta-learning or bayesian optimization [#FIXME: add more? + citations] exist for solving this issue. While showing promising results, bayesian optimization and other hyperparameter optimization techniques require a large overhead. Meta-learning has shown to decrease this overhead \citep{Feurer2015}, but no large and open source meta-learning datasets exist to date.
-
-
-In this paper we describe how experiments with the random bot were executed on OpenML \citep{OpenML2013}. 
-
-Other related projects and papers (e.g. AutoWeka)
+When applying machine learning on real world datasets, users have to choose from a large selection of different machine learning algorithms with many of these algorithms offering a set of hyperparameters, which can be specified by the user and can have a significant influence on the performance of the algorithm. Since there is no free lunch in algorithm selection and one can not expect one algorithm to outperform all the others \citep{Wolpert2001}, a crucial question practitioners have to face on a daily basis therefore is the selection of the "right" algorithm with the "right" hyperparameters for a given dataset. Several approaches like meta-learning or bayesian optimization exist for solving this issue. While showing promising results, bayesian optimization and other hyperparameter optimization techniques require a large overhead. Meta-learning has shown to decrease this overhead \citep{Feurer2015}, but no large and open source meta-learning datasets exist to date.
+In this paper we describe how we created such a dataset by executing random machine learning experiments and storing the results on OpenML \citep{OpenML2013}, an open source database for machine learning problems. As large datasets like Imagenet \citep{ImageNet2009} have shown to improve the progress of machine learning, we hope to support the development of new meta-learning algorithms with this dataset. 
 
 \section{Description of the bot}
 
@@ -69,7 +64,7 @@ The algorithms with their specific hyperparameters and hyperparameter constraint
 be found in table \ref{tab:parameter}. Some hyperparameters are transformed after they have been drawn, 
 for example to get more results in regions where we expect more interesting results. 
 
-<<parameter, echo = FALSE, results="asis",  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
+<<parameter, echo = FALSE, results=tex,  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
 library(xtable)
 suppressWarnings(library(mlr))
 load("./data/parameter_settings.RData")
@@ -108,9 +103,9 @@ for (i in 1:6) {
 Furthermore we choosed the classification tasks (datasets) from the OpenML100 
 Benchmarksuite \citep{Bischl2017} as benchmark datasets, only including datasets without 
 missing data and with binary outcome resulting in 76 datasets.
-The datasets with their specific characteristics can be found in table \ref{tab:data}. 
+The datasets with their specific characteristics can be found in table \ref{tab:datasets}. 
 
-<<datasets, echo = FALSE, results="asis",  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
+<<datasets, echo = FALSE, results=tex,  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
   library(OpenML)
   tasks = listOMLTasks(number.of.classes = 2L, number.of.missing.values = 0, 
     data.tag = "study_14", estimation.procedure = "10-fold Crossvalidation")
