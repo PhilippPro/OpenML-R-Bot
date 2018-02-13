@@ -35,7 +35,6 @@
 
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
 
 % !TeX root = RJwrapper.tex
 % !TeX root = RJwrapper.tex
@@ -64,7 +63,7 @@ The algorithms with their specific hyperparameters and hyperparameter constraint
 be found in table \ref{tab:parameter}. Some hyperparameters are transformed after they have been drawn, 
 for example to get more results in regions where we expect more interesting results. 
 
-<<parameter, echo = FALSE, results=tex,  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
+<<parameter, echo = FALSE, results="asis",  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
 library(xtable)
 suppressWarnings(library(mlr))
 load("./data/parameter_settings.RData")
@@ -102,31 +101,31 @@ for (i in 1:6) {
 
 Furthermore we choosed the classification tasks (datasets) from the OpenML100 
 Benchmarksuite \citep{Bischl2017} as benchmark datasets, only including datasets without 
-missing data and with binary outcome resulting in 76 datasets.
+missing data and with binary outcome resulting in 39 datasets.
 The datasets with their specific characteristics can be found in table \ref{tab:datasets}. 
 
-<<datasets, echo = FALSE, results=tex,  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
+<<datasets, echo = FALSE, results="asis",  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
   library(OpenML)
   tasks = listOMLTasks(number.of.classes = 2L, number.of.missing.values = 0, 
-    data.tag = "study_14", estimation.procedure = "10-fold Crossvalidation")
-  tasks = tasks[, c("task.id", "name", "number.of.instances", "number.of.features")] 
+    tag = "study_14", estimation.procedure = "10-fold Crossvalidation")
+  tasks = tasks[, c("data.id", "name", "number.of.instances", "number.of.features")]
   #tasks$majority.class.size = tasks$majority.class.size / tasks$number.of.instances
-  colnames(tasks) = c("Task_id", "Name", "nObs", "nFeat")
+  colnames(tasks) = c("Data_id", "Name", "nObs", "nFeat")
   
   load("./data/nr_results.RData")
   
-  nr_results = nr_results[,which(colnames(nr_results) %in% sort(tasks$Task_id))]
+  nr_results = nr_results[,which(colnames(nr_results) %in% sort(tasks$Data_id))]
   # delete these results from the database?
   # musk with easy perfect classification and two test datasets
-  tasks = tasks[which(sort(tasks$Task_id) %in% colnames(nr_results)), ]
+  tasks = tasks[which(sort(tasks$Data_id) %in% colnames(nr_results)), ]
   # no results for some datasets
-  tasks = tasks[order(tasks$Task_id),]
-  #tasks$Task_id == colnames(nr_results)
+  tasks = tasks[order(tasks$Data_id),]
+  #tasks$Data_id == colnames(nr_results)
   tasks = cbind(tasks, t(nr_results))
   colnames(tasks)[5:10] = c("glmnet", "rpart", "kknn", "svm", "ranger", "xgboost")
   
   print(xtable(tasks, caption = "Included datasets, number of observations (nObs), 
-    number of features (nFeat) and number of runs of each algorithm", digits = 0, label = "tab:data"), digits = 0, include.rownames=FALSE, size = "scriptsize")
+    number of features (nFeat) and number of runs of each algorithm", digits = 0, label = "tab:datasets"), digits = 0, include.rownames=FALSE, size = "scriptsize")
 @
 
 Following the search paradigm of random search the bot iteratively executes several steps:
@@ -151,7 +150,7 @@ server platforms (OH NO!) like Azure were executed.
 The results of the benchmarks can be accessed in different ways:
 
 \begin{itemize}
-\item The easiest way to access them is to go to the figshare repository \citep{Probst2017} and
+\item The easiest way to access them is to go to the figshare repository \citep{Probst2018} and
 download the .csv files. 
 \end{itemize}
 
