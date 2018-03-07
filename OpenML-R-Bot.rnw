@@ -108,10 +108,15 @@ The datasets with their specific characteristics can be found in table \ref{tab:
 <<datasets, echo = FALSE, results="asis",  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
   library(OpenML)
   tasks = listOMLTasks(number.of.classes = 2L, number.of.missing.values = 0, 
-    tag = "study_14", estimation.procedure = "10-fold Crossvalidation")
-  tasks = tasks[, c("data.id", "name", "number.of.instances", "number.of.features")]
+    tag = "study_14", estimation.procedure = "10-fold Crossvalidation", status = "active")
+  tasks2 = listOMLTasks(number.of.classes = 2L, number.of.missing.values = 0, 
+    tag = "study_14", estimation.procedure = "10-fold Crossvalidation", status = "deactivated")
+  tasks = rbind(tasks, tasks2)
+  tasks = tasks[, c("data.id", "name", "number.of.instances", "number.of.features", "majority.class.size", 
+    "number.of.numeric.features", "number.of.symbolic.features")]
   #tasks$majority.class.size = tasks$majority.class.size / tasks$number.of.instances
-  colnames(tasks) = c("Data_id", "Name", "nObs", "nFeat")
+  colnames(tasks) = c("Data_id", "Name", "nObs", "nFeat", "majPerc", "numFeat", "factFeat")
+  tasks$majPerc = tasks$majPerc/tasks$nObs
   
   load("./data/nr_results.RData")
   
@@ -123,10 +128,12 @@ The datasets with their specific characteristics can be found in table \ref{tab:
   tasks = tasks[order(tasks$Data_id),]
   #tasks$Data_id == colnames(nr_results)
   tasks = cbind(tasks, t(nr_results))
-  colnames(tasks)[5:10] = c("glmnet", "rpart", "kknn", "svm", "ranger", "xgboost")
+  colnames(tasks)[8:13] = c("glmnet", "rpart", "kknn", "svm", "ranger", "xgboost")
+  tab = tasks[, c("Data_id", "Name", "nObs", "nFeat", "majPerc", "numFeat", "factFeat")]
   
-  print(xtable(tasks, caption = "Included datasets, number of observations (nObs), 
-    number of features (nFeat) and number of runs of each algorithm", digits = 0, label = "tab:datasets"), digits = 0, include.rownames=FALSE, size = "scriptsize")
+  print(xtable(tab, caption = "Included datasets, number of observations (nObs), 
+    number of features (nFeat), majority class size percentage (majorPerc), 
+    number of numerical features (numFeat) and number of factor features (factFeat) ", digits = 0, label = "tab:datasets"), digits = 0, include.rownames=FALSE, size = "scriptsize")
 @
 
 Following the search paradigm of random search the bot iteratively executes several steps:
@@ -146,6 +153,23 @@ and \texttt{OpenML} \citep{Casalicchio2017} were used for the whole process.
 In total more than 6 millions (XXX) runs of the random bot on different 
 server platforms (OH NO!) like Azure were executed.
 
+\subsection{Extraction of results}
+
+\color{red} Ueberarbeiten \color{black}
+
+After having run more than 6 million benchmark experiments the results of the bot are downloaded from \textit{OpenML}. 
+Because of technical reasons on one dataset (data.id = 4135) all algorithms except of \texttt{rpart}
+and \texttt{ranger} provide errors, so we exclude it and 38 datasets are left.
+
+For each of the algorithms we only take 500000 experiments for building surrogate models.  
+We experienced that the performance of the surrogate models is high enough with 500000 experiments, so that the runtime for the calculations can be reduced.
+
+The 500000 experiments for each algorithm are chosen by the following procedure: for each algorithm, a threshold $B$ is set (see below) and, if the number of results for a dataset exceeds $B$,  we draw randomly $B$ of the results obtained for this algorithm and this dataset. For each algorithm, the threshold value $B$ is chosen for each algorithm separately to exactly obtain 500000 results for each algorithm. 
+
+For \texttt{kknn} we only executed around 125000 experiments because this 
+number of experiments is high enough to cover the hyperparameter space (that only consists of the parameter $k$) appropriately. 
+This results in a total of around 2.625 million experiments that are used for our analysis and can be downloaded from the figshare 
+
 \section{Access to the benchmark results}
 
 The results of the benchmarks can be accessed in different ways:
@@ -153,11 +177,24 @@ The results of the benchmarks can be accessed in different ways:
 \begin{itemize}
 \item The easiest way to access them is to go to the figshare repository \citep{Probst2018} and
 download the \texttt{.csv} files or the \texttt{.RData} file. 
+\item Alternatively the code for the extraction of the data from the nightly database snapshot of \textit{OpenML} can 
+be found here: \url{https://github.com/ja-thomas/OMLbots/blob/master/snapshot_database/database_extraction.R}
 \end{itemize}
 
 \section{Validity of the results}
 
-DISTRIBUTION OF HYPERPARAMETERS AND DATASETS
+
+
+<<datasets_nr, echo = FALSE, results="asis",  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
+  tab = tasks[, c("Data_id", "glmnet", "rpart", "kknn", "svm", "ranger", "xgboost")]
+  tab = cbind(tab, rowSums(tab))
+  tab = rbind(tab, colSums(tab))
+  tab[nrow(tab),1] = "Total"
+  colnames(tab)[ncol(tab)] = "Total"
+
+  print(xtable(tab, caption = "Number of results by dataset and algorithm", digits = 0, label = "tab:datasets"), digits = 0, include.rownames=FALSE, size = "scriptsize", hline.after = c(-1, 0, nrow(tab)-1, nrow(tab)))
+@
+
 
 \section{Potential usage of the results}
 
