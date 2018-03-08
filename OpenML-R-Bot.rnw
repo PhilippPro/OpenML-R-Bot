@@ -94,9 +94,14 @@ for (i in 1:6) {
   index[i] = nrow(df)
   df_total = rbind(df_total, df)
 }
+df_total$trafo$mtry = c("$x \\cdot p$")
+df_total$trafo$min.node.size = c("$n^x$")
+df_total$hyperparameter = gsub("_", "\\_", df_total$hyperparameter, fixed = TRUE)
+
 #df_total
-  print(xtable(df_total, caption = "Hyperparameters of the algorithms", digits = 0, label = "tab:parameter"), 
-    NA.string = "-",sanitize.text.function=function(x){gsub("_", "\\_",x, fixed = TRUE)}, 
+  print(xtable(df_total, caption = "Hyperparameters of the algorithms. $p$ refers to the number of variables and $n$ to the 
+    number of observations", digits = 0, label = "tab:parameter"), 
+    NA.string = "-",sanitize.text.function=function(x){gsub("_", "_",x, fixed = TRUE)}, 
     include.rownames=FALSE, hline.after = c(0, cumsum(index)))
 @
 
