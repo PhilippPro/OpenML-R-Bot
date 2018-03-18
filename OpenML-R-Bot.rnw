@@ -35,6 +35,7 @@
 
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 
 % !TeX root = RJwrapper.tex
 % !TeX root = RJwrapper.tex
@@ -51,19 +52,17 @@ For any machine learning problem it is essential to have the right dataset. Meta
 When applying machine learning on real world datasets, users have to choose from a large selection of different machine learning algorithms with many of these algorithms offering a set of hyperparameters, which can be specified by the user and can have a significant influence on the performance of the algorithm. Since there is no free lunch in algorithm selection and one can not expect one algorithm to outperform all the others \citep{Wolpert2001}, a crucial question practitioners have to face on a daily basis therefore is the selection of the "right" algorithm with the "right" hyperparameters for a given dataset. Several approaches like meta-learning or bayesian optimization exist for solving this issue. While showing promising results, bayesian optimization and other hyperparameter optimization techniques require a large overhead. Meta-learning has shown to decrease this overhead \citep{Feurer2015}, but no large and open source meta-learning datasets exist to date.
 In this paper we describe how we created such a dataset by executing random machine learning experiments and storing the results on OpenML \citep{OpenML2013}, an open source database for machine learning problems. As large datasets like Imagenet \citep{ImageNet2009} have shown to improve the progress of machine learning, we hope to support the development of new meta-learning algorithms with this dataset. 
 
-\section{Description of the bot}
+\section{Related literature}
+Other related projects and papers (e.g. AutoWeka)
 
-We specified six machine learning algorithms with their specific hyperparameters.
-We choosed the six supervised learning algorithms elastic net (\texttt{glmnet} package), 
-decision tree (\texttt{rpart}), k-nearest neighbors (\texttt{kknn}), 
-support vector machines (\texttt{svm}), random forest (\texttt{ranger}) 
-and gradient boosting (\texttt{xgboost}). They represent algorithms that are used very 
-often and cover a broad range of different types of algorithms. 
-The algorithms with their specific hyperparameters and hyperparameter constraints can 
-be found in table \ref{tab:parameter}. Some hyperparameters are transformed after they have been drawn, 
-for example to get more results in regions where we expect more interesting results. 
+\newpage
 
-<<parameter, echo = FALSE, results="asis",  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
+\section{Method to create the dataset}
+
+To create the dataset different supervised machine learning algorithms were defined with ranges for their relevant hyperparameters and run on different classification tasks. 
+The following six frequently used algorithms were chosen from their respective R-packages: elastic net (\texttt{glmnet} package), decision tree (\texttt{rpart}), k-nearest neighbors (\texttt{kknn}), support vector machines (\texttt{svm}), random forest (\texttt{ranger}) and gradient boosting (\texttt{xgboost}). These algorithms cover a broad range of approaches to machine learning and therefore should explore most datasets reasonably well. For each algorithm the available hyperparameters were explored in a predefined range (see table \ref{tab:parameter}). Values of some of these ranges were transformed by the function found in column \textit{trafo} to explore the range in a non-uniform manner. This is useful, if e. g. minor changes in a hyperparameter are not expected to have a significant impact on the performance of an algorithm.
+
+<<parameter, echo = FALSE, results=tex,  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
 library(xtable)
 suppressWarnings(library(mlr))
 load("./data/parameter_settings.RData")
@@ -99,12 +98,12 @@ for (i in 1:6) {
     include.rownames=FALSE, hline.after = c(0, cumsum(index)))
 @
 
-Furthermore we choosed the classification tasks (datasets) from the OpenML100 
-Benchmarksuite \citep{Bischl2017} as benchmark datasets, only including datasets without 
+Furthermore we choose the classification tasks (datasets) from the OpenML100 
+Benchmark suite \citep{Bischl2017} as benchmark datasets, only including datasets without 
 missing data and with binary outcome resulting in 39 datasets.
 The datasets with their specific characteristics can be found in table \ref{tab:datasets}. 
 
-<<datasets, echo = FALSE, results="asis",  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
+<<datasets, echo = FALSE, results=tex,  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
   library(OpenML)
   tasks = listOMLTasks(number.of.classes = 2L, number.of.missing.values = 0, 
     tag = "study_14", estimation.procedure = "10-fold Crossvalidation")
@@ -112,20 +111,7 @@ The datasets with their specific characteristics can be found in table \ref{tab:
   #tasks$majority.class.size = tasks$majority.class.size / tasks$number.of.instances
   colnames(tasks) = c("Data_id", "Name", "nObs", "nFeat")
   
-  load("./data/nr_results.RData")
-  
-  nr_results = nr_results[,which(colnames(nr_results) %in% sort(tasks$Data_id))]
-  # delete these results from the database?
-  # musk with easy perfect classification and two test datasets
-  tasks = tasks[which(sort(tasks$Data_id) %in% colnames(nr_results)), ]
-  # no results for some datasets
-  tasks = tasks[order(tasks$Data_id),]
-  #tasks$Data_id == colnames(nr_results)
-  tasks = cbind(tasks, t(nr_results))
-  colnames(tasks)[5:10] = c("glmnet", "rpart", "kknn", "svm", "ranger", "xgboost")
-  
-  print(xtable(tasks, caption = "Included datasets, number of observations (nObs), 
-    number of features (nFeat) and number of runs of each algorithm", digits = 0, label = "tab:datasets"), digits = 0, include.rownames=FALSE, size = "scriptsize")
+  print(xtable(tasks, caption = "Included datasets with meta-data", digits = 0, label = "tab:datasets"), digits = 0, include.rownames=FALSE, size = "scriptsize")
 @
 
 Following the search paradigm of random search the bot iteratively executes several steps:
@@ -139,14 +125,14 @@ Following the search paradigm of random search the bot iteratively executes seve
 identification tag \texttt{mlrRandomBot}
 \end{enumerate}
 
-The code for the bot can be found on github (\url{https://github.com/ja-thomas/OMLbots}), the R packages \texttt{mlr} \citep{Bischl2016} 
+The code for the bot can be found on GitHub (\url{https://GitHub.com/ja-thomas/OMLbots}), the R packages \texttt{mlr} \citep{Bischl2016} 
 and \texttt{OpenML} \citep{Casalicchio2017} were used for the whole process. 
 
+
+
+\section{Discussion of and access to the results}
 In total more than 6 millions (XXX) runs of the random bot on different 
-server platforms (OH NO!) like Azure were executed.
-
-\section{Access to the benchmark results}
-
+server platforms like Azure were executed.
 The results of the benchmarks can be accessed in different ways:
 
 \begin{itemize}
@@ -154,9 +140,33 @@ The results of the benchmarks can be accessed in different ways:
 download the .csv files. 
 \end{itemize}
 
-\section{Validity of the results}
-
 DISTRIBUTION OF HYPERPARAMETERS AND DATASETS
+
+Weakness: Dimension is too high, e.g. for xgboost. The best regions are not explored enough. 
+Maybe add later. 
+
+See the following table for the resulting dataset.
+
+<<tbl_results, echo = FALSE, results=tex,  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
+  library(OpenML)
+  tasks = listOMLTasks(number.of.classes = 2L, number.of.missing.values = 0, 
+    tag = "study_14", estimation.procedure = "10-fold Crossvalidation")
+  tasks = tasks[, c("data.id"), drop = FALSE]
+  #tasks$majority.class.size = tasks$majority.class.size / tasks$number.of.instances
+  colnames(tasks) = c("Data_id")
+  
+  #Get results
+  load("./data/nr_results.RData")
+  nr_results = as.data.frame(t(nr_results))
+  colnames(nr_results) = c("glmnet", "rpart", "kknn", "svm", "ranger", "xgboost")
+  nr_results$Data_id = row.names(nr_results)
+  
+  #merge
+  tasks = merge(tasks, nr_results, by="Data_id")
+  
+  print(xtable(tasks, caption = "Results by dataset and algorithm", digits = 0, label = "tab:datasets"), digits = 0, include.rownames=FALSE, size = "scriptsize")
+@
+
 
 \section{Potential usage of the results}
 
@@ -178,15 +188,10 @@ possibly time limitations propose hyperparameter settings that perform good
 on a specific dataset
 \end{itemize}
 
-\section{Literature}
-Other related projects and papers (e.g. AutoWeka)
 
-\section{to-Do}
-\begin{itemize}
-\item Think about the title
-\item Weakness: Dimension is too high, e.g. for xgboost. The best regions are not explored enough. 
-Maybe add later. 
-\end{itemize}
+
+
+
 
 \bibliography{bot}
  
