@@ -35,23 +35,25 @@
 
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
 
-% !TeX root = RJwrapper.tex
-% !TeX root = RJwrapper.tex
 \title{Automatic Exploration of Machine Learning Experiments on OpenML}
 \author{by Daniel Kühn*, Philipp Probst*, Janek Thomas and Bernd Bischl}
 
 \maketitle
 
 \section*{Abstract}
-Understanding the influence of hyperparameters on the performance of a machine learning algorithm is an important part of finding a well performing and adequately tuned algorithm for a given dataset. As to date no dataset exists to support this required understanding for state of the art algorithms like xgboost or random forest, this paper presents a large and open dataset for this problem (see \citep{Probst2018} to access the dataset). The dataset contains six different machine learning algorithms trained with random hyperparameters on 39 datasets from OpenML with different performance measures, runtimes and meta-data for each dataset. This dataset can be used for meta-learning, measuring the tunability of algorithms, benchmarking of algorithms and other tasks mainly related with hyperparameters.
+Understanding the influence of hyperparameters on the performance of a machine learning algorithm is an important part of finding a well performing and adequately tuned algorithm for a given dataset. As to date no dataset exists to support this required understanding for state of the art algorithms like xgboost or random forest, this paper presents a large and open dataset for this problem (see \citep{Probst2018} to access the dataset). The dataset contains the performance results  (AUC, accuracy and Brier score) of six different machine learning algorithms, the used hyperparameters that were set by a random search, runtimes and meta-data for each dataset. It can be used for meta-learning, finding good defaults, measuring the tunability of algorithms and hyperparameters, benchmarking of algorithms and other tasks mainly related with hyperparameters. %The contained algorithms are elastic net (glmnet R-package), decision tree (rpart), k-nearest neighbors (kknn), support vector machine (e1071), random forest (ranger) and extreme gradient boosting (xgboost).
 
 
 \section{Introduction}
 
-When applying machine learning on real world datasets, users have to choose from a large selection of different machine learning algorithms with many of these algorithms offering a set of hyperparameters, which can be specified by the user and can have a significant influence on the performance of the algorithm. Since there is no free lunch in algorithm selection and one can not expect one algorithm to outperform all the others \citep{Wolpert2001}, a crucial question practitioners have to face on a daily basis therefore is the selection of the "right" algorithm with the "right" hyperparameters for a given dataset. This problem is not easy to solve, because choices are many and the evaluation of a single machine learning run usally is computationally expensive and the hyperparameter-space is complex \citep{Claesen2015}. Several approaches like meta-learning or bayesian optimization exist for solving this issue. While showing promising results, bayesian optimization and other hyperparameter optimization techniques require a large overhead. Meta-learning has shown to decrease this overhead \citep{Feurer2015}, but no large and open source meta-learning datasets exist to date. \color{red} Was ist Meta-Learning? Was ist ein Meta-Learn Dataset? Ist der Datensatz wirklich hauptsächlich für Metalearning?\color{black}
-In this paper we describe how we created such a dataset by executing random machine learning experiments and storing the results on OpenML \citep{OpenML2013}, an open source database for machine learning problems. As large datasets like Imagenet \citep{ImageNet2009} have shown to improve the progress of machine learning, we hope to support the development of new meta-learning algorithms with this dataset. 
+When applying machine learning on real world datasets, users have to choose from a large selection of different machine learning algorithms with many of these algorithms offering a set of hyperparameters, which can be specified by the user and can have a significant influence on the performance of the algorithm. Since there is no free lunch in algorithm selection and one can not expect one algorithm to outperform all the others \citep{Wolpert2001}, a crucial question practitioners have to face on a daily basis therefore is the selection of the "right" algorithm with the "right" hyperparameters for a given dataset. This problem is not easy to solve, because choices are many and the evaluation of a single machine learning run usally is computationally expensive and the hyperparameter-space is complex \citep{Claesen2015}. A usual approach is to run a tuning algorithm like bayesian optimization to find the best hyperparameter setting. While showing promising results, bayesian optimization and other hyperparameter optimization techniques require a large overhead. 
+
+Meta-learning tries to decrease this overhead \citep{Feurer2015}, by using information of previous algorithm runs on other datasets. A requirement for this, is 
+to have a meta-learning dataset, that contains the information of previous runs. With this paper we provide a open accesible dataset that contains information of 
+previous runs of six different machine learning algorithms on 38 classification datasets. As large datasets like Imagenet \citep{ImageNet2009} have shown to improve the progress of machine learning, we hope to support the development of new meta-learning algorithms with this dataset. 
+
+We first describe how we created such a dataset by executing random machine learning experiments and storing the results on OpenML \citep{OpenML2013}, an open source database for machine learning problems. Then the possibilities of accessing this dataset are shortly presented. Finally we briefly discuss potential usage of the dataset. 
 
 \section{Related literature}
 Other related projects and papers (e.g. AutoWeka)
@@ -61,14 +63,12 @@ Dataset repositories:
 Similar datasets:
 - \citep{Reif2012ACD}
 
-\newpage
-
-\section{Method to create the dataset}
+\section{Creating the dataset}
 
 To create the dataset different supervised machine learning algorithms were defined with ranges for their relevant hyperparameters and run on different classification tasks. 
-The following six frequently used algorithms were chosen from their respective R-packages: elastic net (\texttt{glmnet} package), decision tree (\texttt{rpart}), k-nearest neighbors (\texttt{kknn}), support vector machines (\texttt{svm}), random forest (\texttt{ranger}) and gradient boosting (\texttt{xgboost}). These algorithms cover a broad range of approaches to machine learning and therefore should explore most datasets reasonably well. For each algorithm the available hyperparameters were explored in a predefined range (see table \ref{tab:parameter}). Values of some of these ranges were transformed by the function found in column \textit{trafo} to explore the range in a non-uniform manner. This is useful, if e. g. minor changes in a hyperparameter are not expected to have a significant impact on the performance of an algorithm.
+The following six frequently used algorithms were chosen from their respective R-packages: elastic net (\texttt{glmnet} package), decision tree (\texttt{rpart}), k-nearest neighbors (\texttt{kknn}), support vector machines (\texttt{svm}), random forest (\texttt{ranger}) and gradient boosting (\texttt{xgboost}). These algorithms cover a broad range of approaches to machine learning and therefore should explore most datasets reasonably well. \color{red} Was heißt \textit{explore well}? \color{black} For each algorithm the available hyperparameters were explored in a predefined range (see table~\ref{tab:parameter}). Values of some of these ranges were transformed by the function found in column \textit{trafo} to explore the range in a non-uniform manner. This is useful, if, for example, minor changes in a hyperparameter are not expected to have a significant impact on the performance of an algorithm.
 
-<<parameter, echo = FALSE, results=tex,  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
+<<parameter, echo = FALSE, results="asis",  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
 library(xtable)
 suppressWarnings(library(mlr))
 load("./data/parameter_settings.RData")
@@ -109,12 +109,12 @@ df_total$hyperparameter = gsub("_", "\\_", df_total$hyperparameter, fixed = TRUE
     include.rownames=FALSE, hline.after = c(0, cumsum(index)))
 @
 
-Furthermore we choose the classification tasks (datasets) from the OpenML100 
-Benchmark suite \citep{Bischl2017} as benchmark datasets, only including datasets without 
-missing data and with binary outcome resulting in 39 datasets.
-The datasets with their specific characteristics can be found in table \ref{tab:datasets}. 
+These algorithms are run on a subset of the OpenML100 Benchmark suite \citep{Bischl2017}, which consists of 100 classification datasets
+carefully curated from the thousands of datasets available on OpenML. We only include datasets without 
+missing data and with binary outcome resulting in 38 datasets.
+The datasets with their specific characteristics can be found in table~\ref{tab:datasets}. 
 
-<<datasets, echo = FALSE, results=tex,  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
+<<datasets, echo = FALSE, results="asis",  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
   library(OpenML)
   tasks = listOMLTasks(number.of.classes = 2L, number.of.missing.values = 0, 
     tag = "study_14", estimation.procedure = "10-fold Crossvalidation", status = "active")
@@ -124,10 +124,10 @@ The datasets with their specific characteristics can be found in table \ref{tab:
   tasks = tasks[, c("data.id", "name", "number.of.instances", "number.of.features", "majority.class.size", 
     "number.of.numeric.features", "number.of.symbolic.features")]
   #tasks$majority.class.size = tasks$majority.class.size / tasks$number.of.instances
-  colnames(tasks) = c("Data_id", "Name", "nObs", "nFeat", "majPerc", "numFeat", "factFeat")
+  colnames(tasks) = c("Data_id", "Name", "nObs", "nFeat", "majPerc", "numFeat", "catFeat")
   tasks$majPerc = tasks$majPerc/tasks$nObs
   
-  print(xtable(tasks, caption = "Included datasets with meta-data", digits = 0, label = "tab:datasets"), digits = 0, include.rownames=FALSE, size = "scriptsize")
+  print(xtable(tasks, caption = "Included datasets with meta-data. \\textit{nFeat} are the number of Features, \\textit{majPerc} the percentage of observations with the most common class, \\textit{numFeat} the number of numeric features and \\textit{catFeat} the number of categorical features.", digits = 2, label = "tab:datasets"), digits = 0, include.rownames=FALSE, size = "scriptsize")
 @
 
 Following the search paradigm of random search the bot iteratively executes several steps:
@@ -145,42 +145,22 @@ The code for the bot can be found on GitHub (\url{https://GitHub.com/ja-thomas/O
 and \texttt{OpenML} \citep{Casalicchio2017} were used for the whole process. 
 
 
-\subsection{Extraction of results}
+\subsection*{Extraction of results}
 
-After having run more than 6 million benchmark experiments the results of the bot are downloaded from \textit{OpenML}. 
+After having run more than 6 million benchmark experiments the results of the bot are downloaded from OpenML. 
 Because of technical reasons on one dataset (data.id = 4135) all algorithms except of \texttt{rpart}
 and \texttt{ranger} provide errors, so we exclude it and 38 datasets are left.
 
 For each of the algorithms we only take 500000 experiments for building surrogate models.  
-We experienced that the performance of the surrogate models is high enough with 500000 experiments, so that the runtime for the calculations can be reduced.
+They are chosen by the following procedure: for each algorithm, a threshold $B$ is set (see below) and, if the number of results for a dataset exceeds $B$,  we draw randomly $B$ of the results obtained for this algorithm and this dataset. For each algorithm, the threshold value $B$ is chosen for each algorithm separately to exactly obtain 500000 results for each algorithm. 
 
-The 500000 experiments for each algorithm are chosen by the following procedure: for each algorithm, a threshold $B$ is set (see below) and, if the number of results for a dataset exceeds $B$,  we draw randomly $B$ of the results obtained for this algorithm and this dataset. For each algorithm, the threshold value $B$ is chosen for each algorithm separately to exactly obtain 500000 results for each algorithm. 
+For \texttt{kknn} we only executed 30 experiments per dataset because this number of experiments is high enough
+to cover the hyperparameter space (that only consists of the parameter $k$ for $k \in {1,...,30}$) appropriately, resulting in 1140 experiments.
+In total this results in around 2.5 million experiments.
 
-For \texttt{kknn} we only executed around 125000 experiments because this 
-number of experiments is high enough to cover the hyperparameter space (that only consists of the parameter $k$) appropriately. 
-This results in a total of around 2.625 million experiments that are used for our analysis and can be downloaded from the figshare 
+The distribution of the runs on the datasets and algorithms can be seen in table~\ref{tab:datasets}.
 
-\section{Access to the benchmark results}
-
-\section{Discussion of and access to the results}
-In total more than 6 millions (XXX) runs of the random bot on different 
-server platforms like Azure were executed.
-The results of the benchmarks can be accessed in different ways:
-
-\begin{itemize}
-\item The easiest way to access them is to go to the figshare repository \citep{Probst2018} and
-download the \texttt{.csv} files or the \texttt{.RData} file. 
-\item Alternatively the code for the extraction of the data from the nightly database snapshot of \textit{OpenML} can 
-be found here: \url{https://github.com/ja-thomas/OMLbots/blob/master/snapshot_database/database_extraction.R}
-\end{itemize}
-
-
-Weakness: Dimension is too high, e.g. for xgboost. The best regions are not explored enough. 
-Maybe add later. 
-
-See the following table for the resulting dataset.
-
-<<tbl_results, echo = FALSE, results=tex,  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
+<<tbl_results, echo = FALSE, results="asis",  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
   library(OpenML)
   tasks = listOMLTasks(number.of.classes = 2L, number.of.missing.values = 0, 
     tag = "study_14", estimation.procedure = "10-fold Crossvalidation")
@@ -200,6 +180,16 @@ See the following table for the resulting dataset.
   print(xtable(tasks, caption = "Results by dataset and algorithm", digits = 0, label = "tab:datasets"), digits = 0, include.rownames=FALSE, size = "scriptsize")
 @
 
+\section{Access to the benchmark results}
+
+The results of the benchmarks can be accessed in different ways:
+
+\begin{itemize}
+\item The easiest way to access them is to go to the figshare repository \citep{Probst2018} and
+download the \texttt{.csv} files or the \texttt{.RData} file. 
+\item Alternatively the code for the extraction of the data from the nightly database snapshot of OpenML can 
+be found here: \url{https://github.com/ja-thomas/OMLbots/blob/master/snapshot_database/database_extraction.R}
+\end{itemize}
 
 \section{Potential usage of the results}
 
@@ -212,7 +202,7 @@ This can be used to:
 \item Measure differences between the algorithms
 \item Optimize tuning algorithms:
 \begin{itemize}
-\item Measure the tunability of algorithms and find out which parameters should be tuned
+\item Measure the tunability of algorithms and find out which parameters should be tuned \citep[see][]{Probst20182}
 \item Use the results to get priors for tuning algorithms - in which regions of the 
 hyperparameter space should be searched with higher probability?
 \end{itemize}
@@ -221,7 +211,8 @@ possibly time limitations propose hyperparameter settings that perform good
 on a specific dataset
 \end{itemize}
 
-
+Weaknesses: Dimension is too high, e.g., for xgboost. The best regions are not explored enough. The datasets are not chosen to be \textit{representative} for 
+a specific domain.
 
 
 
