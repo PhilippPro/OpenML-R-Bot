@@ -127,7 +127,20 @@ The datasets with their specific characteristics can be found in table~\ref{tab:
   colnames(tasks) = c("Data_id", "Name", "nObs", "nFeat", "majPerc", "numFeat", "catFeat")
   tasks$majPerc = tasks$majPerc/tasks$nObs
   
-  print(xtable(tasks, caption = "Included datasets with meta-data. \\textit{nFeat} are the number of Features, \\textit{majPerc} the percentage of observations with the most common class, \\textit{numFeat} the number of numeric features and \\textit{catFeat} the number of categorical features.", digits = 2, label = "tab:datasets"), digits = 0, include.rownames=FALSE, size = "scriptsize")
+  load("./data/nr_results.RData")
+  
+  nr_results = nr_results[,which(colnames(nr_results) %in% sort(tasks$Data_id))]
+  # delete these results from the database?
+  # musk with easy perfect classification and two test datasets
+  tasks = tasks[which(sort(tasks$Data_id) %in% colnames(nr_results)), ]
+  # no results for some datasets
+  tasks = tasks[order(tasks$Data_id),]
+  #tasks$Data_id == colnames(nr_results)
+  tasks = cbind(tasks, t(nr_results))
+  colnames(tasks)[8:13] = c("glmnet", "rpart", "kknn", "svm", "ranger", "xgboost")
+  tab = tasks[, c("Data_id", "Name", "nObs", "nFeat", "majPerc", "numFeat", "catFeat")]
+  
+  print(xtable(tab, caption = "Included datasets with meta-data. \\textit{nObs} are the number of observations, \\textit{nFeat} the number of Features, \\textit{majPerc} the percentage of observations with the most common class, \\textit{numFeat} the number of numeric features and \\textit{catFeat} the number of categorical features.", digits = 2, label = "tab:datasets"), digits = 0, include.rownames=FALSE, size = "scriptsize")
 @
 
 Following the search paradigm of random search the bot iteratively executes several steps:
@@ -161,23 +174,13 @@ In total this results in around 2.5 million experiments.
 The distribution of the runs on the datasets and algorithms can be seen in table~\ref{tab:datasets}.
 
 <<tbl_results, echo = FALSE, results="asis",  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
-  library(OpenML)
-  tasks = listOMLTasks(number.of.classes = 2L, number.of.missing.values = 0, 
-    tag = "study_14", estimation.procedure = "10-fold Crossvalidation")
-  tasks = tasks[, c("data.id"), drop = FALSE]
-  #tasks$majority.class.size = tasks$majority.class.size / tasks$number.of.instances
-  colnames(tasks) = c("Data_id")
-  
-  #Get results
-  load("./data/nr_results.RData")
-  nr_results = as.data.frame(t(nr_results))
-  colnames(nr_results) = c("glmnet", "rpart", "kknn", "svm", "ranger", "xgboost")
-  nr_results$Data_id = row.names(nr_results)
-  
-  #merge
-  tasks = merge(tasks, nr_results, by="Data_id")
-  
-  print(xtable(tasks, caption = "Results by dataset and algorithm", digits = 0, label = "tab:datasets"), digits = 0, include.rownames=FALSE, size = "scriptsize")
+tab = tasks[, c("Data_id", "glmnet", "rpart", "kknn", "svm", "ranger", "xgboost")]
+  tab = cbind(tab, rowSums(tab[,2:7]))
+  tab = rbind(tab, colSums(tab))
+  tab[nrow(tab),1] = "Total"
+  colnames(tab)[ncol(tab)] = "Total"
+
+  print(xtable(tab, caption = "Number of results by dataset and algorithm", digits = 0, label = "tab:datasets"), digits = 0, include.rownames=FALSE, size = "scriptsize", hline.after = c(-1, 0, nrow(tab)-1, nrow(tab)))
 @
 
 \section{Access to the benchmark results}
