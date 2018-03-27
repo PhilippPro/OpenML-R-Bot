@@ -19,6 +19,12 @@
   citecolor=blue, 
 }
 
+\usepackage{etoolbox}
+\appto\UrlBreaks{\do\a\do\b\do\c\do\d\do\e\do\f\do\g\do\h\do\i\do\j
+\do\k\do\l\do\m\do\n\do\o\do\p\do\q\do\r\do\s\do\t\do\u\do\v\do\w
+\do\x\do\y\do\z}
+
+
 \usepackage{nicefrac}
 \usepackage{caption}
 \usepackage{tabularx}
@@ -35,6 +41,7 @@
 
 
 \begin{document}
+
 
 \title{Automatic Exploration of Machine Learning Experiments on OpenML}
 \author{by Daniel Kühn*, Philipp Probst*, Janek Thomas and Bernd Bischl}
@@ -66,7 +73,7 @@ Similar datasets:
 \section{Creating the dataset}
 
 To create the dataset different supervised machine learning algorithms were defined with ranges for their relevant hyperparameters and run on different classification tasks. 
-The following six frequently used algorithms were chosen from their respective R-packages: elastic net (\texttt{glmnet} package), decision tree (\texttt{rpart}), k-nearest neighbors (\texttt{kknn}), support vector machines (\texttt{svm}), random forest (\texttt{ranger}) and gradient boosting (\texttt{xgboost}). These algorithms cover a broad range of approaches to machine learning and therefore should explore most datasets reasonably well. \color{red} Was heißt \textit{explore well}? \color{black} For each algorithm the available hyperparameters were explored in a predefined range (see table~\ref{tab:parameter}). Values of some of these ranges were transformed by the function found in column \textit{trafo} to explore the range in a non-uniform manner. This is useful, if, for example, minor changes in a hyperparameter are not expected to have a significant impact on the performance of an algorithm.
+The following six frequently used algorithms were chosen from their respective R-packages: elastic net (\texttt{glmnet} package), decision tree (\texttt{rpart}), k-nearest neighbors (\texttt{kknn}), support vector machines (\texttt{svm}), random forest (\texttt{ranger}) and gradient boosting (\texttt{xgboost}). These algorithms cover a broad range of approaches to machine learning. For each algorithm the available hyperparameters were explored in a predefined range (see table~\ref{tab:parameter}). Values of some of these ranges were transformed by the function found in column \textit{trafo} to explore the range in a non-uniform manner. This is useful, if, for example, minor changes in a hyperparameter are not expected to have a significant impact on the performance of an algorithm.
 
 <<parameter, echo = FALSE, results="asis",  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
 library(xtable)
@@ -147,14 +154,15 @@ Following the search paradigm of random search the bot iteratively executes seve
 \begin{enumerate}
 \item Randomly draw one of the six algorithms
 \item Randomly draw a hyperparameter setting of the chosen algorithm
-\item Randomly draw one of the benchmark datasets
+\item Randomly draw one of the 38 binary classification benchmark datasets
 \item Download the dataset from OpenML
-\item Benchmark the specified algorithm on the specified dataset with 10-fold cross-validation
-\item Upload the benchmark results with time measurements to OpenML with the 
-identification tag \texttt{mlrRandomBot}
+\item Benchmark the specified algorithm on the specified dataset with 10-fold cross-validation (the standardized splits for the cross-validation are specified by OpenML)
+\item Upload the benchmark results with hyperparameters, performance measures and time measurements to OpenML with the tag \texttt{mlrRandomBot} used for identification
 \end{enumerate}
 
-The code for the bot can be found on GitHub (\url{https://GitHub.com/ja-thomas/OMLbots}), the R packages \texttt{mlr} \citep{Bischl2016} 
+The code for the bot can be found on GitHub (\url{https://GitHub.com/ja-thomas/OMLbots}). Further algorithms can be easily added by adding an algorithm with specific hyperparameters in the \texttt{R/botSetLearnerParamPairs.R} file. The main function \texttt{runBot} executes the bot with specific settings (number of experiments, temporary file, sample configurations, etc.).
+
+The R packages \texttt{mlr} \citep{Bischl2016} 
 and \texttt{OpenML} \citep{Casalicchio2017} were used for the whole process. 
 
 
@@ -164,7 +172,7 @@ After having run more than 6 million benchmark experiments the results of the bo
 Because of technical reasons on one dataset (data.id = 4135) all algorithms except of \texttt{rpart}
 and \texttt{ranger} provide errors, so we exclude it and 38 datasets are left.
 
-For each of the algorithms we only take 500000 experiments for building surrogate models.  
+For each of the algorithms we only take 500000 experiments to obtain a dataset which is balanced regarding the experiment runs.  
 They are chosen by the following procedure: for each algorithm, a threshold $B$ is set (see below) and, if the number of results for a dataset exceeds $B$,  we draw randomly $B$ of the results obtained for this algorithm and this dataset. For each algorithm, the threshold value $B$ is chosen for each algorithm separately to exactly obtain 500000 results for each algorithm. 
 
 For \texttt{kknn} we only executed 30 experiments per dataset because this number of experiments is high enough
