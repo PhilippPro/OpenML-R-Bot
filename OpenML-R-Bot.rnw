@@ -63,12 +63,12 @@ previous runs of six different machine learning algorithms on 38 classification 
 We first describe how we created such a dataset by executing random machine learning experiments and storing the results on OpenML \citep{OpenML2013}, an open source database for machine learning problems. Then the possibilities of accessing this dataset are shortly presented. Finally we briefly discuss potential usage of the dataset. 
 
 \section{Related literature}
-Other related projects and papers (e.g. AutoWeka)
+Other related projects and papers (e.g. AutoWeka) -> Gibt es Datensatz dazu?
 Dataset repositories: 
-- \citep{Dua2017}
+- \citep{Dua2017} -> Ist nicht passend zu unserem Projekt sondern höchstens Alternative/Vorgänger von OpenML?
 
 Similar datasets:
-- \citep{Reif2012ACD}
+\citep{Reif2012ACD} describe a creation of a similar dataset in their paper. -> Paper ist doof, da Link nicht mehr funktioniert und nicht mal die Anzahl an Beobachtungen gegeben ist...
 
 \section{Creating the dataset}
 
