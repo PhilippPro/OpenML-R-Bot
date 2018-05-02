@@ -78,6 +78,8 @@ On the other hand, to the best of our knowledge there are currently no papers an
 
 \section{Creating the dataset}
 
+In this section we describe in detail how we create the dataset. 
+
 \subsection{Algorithms}
 
 To create the dataset six supervised machine learning algorithms were used in R with predefined ranges for their relevant hyperparameters and they were run on 38 classification tasks. 
@@ -181,7 +183,7 @@ The R packages \texttt{mlr} \citep{Bischl2016}
 and \texttt{OpenML} \citep{Casalicchio2017} were used for the whole process. 
 
 
-\subsection*{Extraction of results}
+\subsection{Extraction of results}
 
 After having run more than 6 million benchmark experiments the results of the bot are downloaded from OpenML. 
 Because of technical reasons on one dataset (data.id = 4135) all algorithms except of \texttt{rpart}
