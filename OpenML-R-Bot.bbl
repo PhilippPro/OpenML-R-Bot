@@ -1,0 +1,91 @@
+\begin{thebibliography}{12}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bischl et~al.(2016)Bischl, Lang, Kotthoff, Schiffner, Richter,
+  Studerus, Casalicchio, and Jones]{Bischl2016}
+B.~Bischl, M.~Lang, L.~Kotthoff, J.~Schiffner, J.~Richter, E.~Studerus,
+  G.~Casalicchio, and Z.~M. Jones.
+\newblock mlr: Machine learning in r.
+\newblock \emph{Journal of Machine Learning Research}, 17\penalty0
+  (170):\penalty0 1--5, 2016.
+\newblock URL \url{http://jmlr.org/papers/v17/15-066.html}.
+
+\bibitem[{Bischl} et~al.(2017){Bischl}, {Casalicchio}, {Feurer}, {Hutter},
+  {Lang}, {Mantovani}, {van Rijn}, and {Vanschoren}]{Bischl2017}
+B.~{Bischl}, G.~{Casalicchio}, M.~{Feurer}, F.~{Hutter}, M.~{Lang}, R.~G.
+  {Mantovani}, J.~N. {van Rijn}, and J.~{Vanschoren}.
+\newblock {OpenML Benchmarking Suites and the OpenML100}.
+\newblock \emph{ArXiv e-prints}, Aug. 2017.
+
+\bibitem[Casalicchio et~al.(2017)Casalicchio, Bossek, Lang, Kirchhoff,
+  Kerschke, Hofner, Seibold, Vanschoren, and Bischl]{Casalicchio2017}
+G.~Casalicchio, J.~Bossek, M.~Lang, D.~Kirchhoff, P.~Kerschke, B.~Hofner,
+  H.~Seibold, J.~Vanschoren, and B.~Bischl.
+\newblock {{OpenML}: An {R} package to connect to the machine learning platform
+  {OpenML}}.
+\newblock \emph{Computational Statistics}, 32\penalty0 (3):\penalty0 1--15,
+  2017.
+\newblock \doi{10.1007/s00180-017-0742-2}.
+
+\bibitem[Claesen and Moor(2015)]{Claesen2015}
+M.~Claesen and B.~D. Moor.
+\newblock Hyperparameter search in machine learning.
+\newblock \emph{MIC 2015: The XI Metaheuristics International Conference},
+  2015.
+
+\bibitem[Deng et~al.(2009)Deng, Dong, Socher, jia Li, Li, and
+  Fei-fei]{ImageNet2009}
+J.~Deng, W.~Dong, R.~Socher, L.~jia Li, K.~Li, and L.~Fei-fei.
+\newblock Imagenet: A large-scale hierarchical image database.
+\newblock \emph{IEEE Conference on Computer Vision and Pattern Recognition},
+  pages 248--255, 2009.
+
+\bibitem[Feurer et~al.(2015)Feurer, Springenberg, and Hutter]{Feurer2015}
+M.~Feurer, J.~T. Springenberg, and F.~Hutter.
+\newblock Initializing bayesian hyperparameter optimization via meta-learning.
+\newblock 2015.
+
+\bibitem[Probst and Kühn(2018)]{Probst2018}
+P.~Probst and D.~Kühn.
+\newblock {OpenML R Bot Benchmark Data (final subset)}.
+\newblock 2 2018.
+\newblock \doi{10.6084/m9.figshare.5882230.v1}.
+\newblock URL
+  \url{https://figshare.com/articles/OpenML_R_Bot_Benchmark_Data_final_subset_/5882230}.
+
+\bibitem[{Probst} et~al.(2018){Probst}, {Bischl}, and
+  {Boulesteix}]{Probst20182}
+P.~{Probst}, B.~{Bischl}, and A.-L. {Boulesteix}.
+\newblock {Tunability: Importance of Hyperparameters of Machine Learning
+  Algorithms}.
+\newblock \emph{ArXiv preprints arXiv:1703.03373}, 2018.
+
+\bibitem[Reif(2012)]{Reif2012ACD}
+M.~Reif.
+\newblock A comprehensive dataset for evaluating approaches of various
+  meta-learning tasks.
+\newblock In \emph{ICPRAM}, 2012.
+
+\bibitem[{Smith} et~al.(2014){Smith}, {White}, {Giraud-Carrier}, and
+  {Martinez}]{2014arXiv1405.7292S}
+M.~R. {Smith}, A.~{White}, C.~{Giraud-Carrier}, and T.~{Martinez}.
+\newblock {An Easy to Use Repository for Comparing and Improving Machine
+  Learning Algorithm Usage}.
+\newblock \emph{ArXiv e-prints}, May 2014.
+
+\bibitem[Vanschoren et~al.(2013)Vanschoren, van Rijn, Bischl, and
+  Torgo]{OpenML2013}
+J.~Vanschoren, J.~N. van Rijn, B.~Bischl, and L.~Torgo.
+\newblock {{OpenML}: Networked Science in Machine Learning}.
+\newblock \emph{SIGKDD Explorations}, 15\penalty0 (2):\penalty0 49--60, 2013.
+
+\bibitem[Wolpert(2001)]{Wolpert2001}
+D.~H. Wolpert.
+\newblock The supervised learning no-free-lunch theorems.
+\newblock 2001.
+
+\end{thebibliography}

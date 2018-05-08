@@ -40,8 +40,9 @@
 \usepackage{setspace}
 
 
+\usepackage{Sweave}
 \begin{document}
-\SweaveOpts{concordance=TRUE}
+\input{OpenML-R-Bot-concordance}
 
 
 \title{Automatic Exploration of Machine Learning Experiments on OpenML}
@@ -68,47 +69,51 @@ We first describe how we created such a meta-dataset by executing random machine
 
 To create the dataset the following six supervised machine learning algorithms were run with predefined ranges for their relevant hyperparameters on 38 classification tasks: elastic net (\texttt{glmnet}), decision tree (\texttt{rpart}), k-nearest neighbors (\texttt{kknn}), support vector machines (\texttt{svm}), random forest (\texttt{ranger}) and gradient boosting (\texttt{xgboost}). These algorithms cover a broad range of approaches to machine learning. For each algorithm the available hyperparameters were explored in a predefined range (see table~\ref{tab:parameter}). Values of some of these ranges were transformed by the function found in column \textit{trafo} to explore the range in a non-uniform manner. This is useful, if e.g. minor changes in a hyperparameter are not expected to have a significant impact on the performance of an algorithm.
 
-<<parameter, echo = FALSE, results=tex,  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
-library(xtable)
-suppressWarnings(library(mlr))
-load("./data/parameter_settings.RData")
-df_total = data.frame()
-index = numeric()
-for (i in 1:6) {
-  df = do.call(rbind, lrn.par.set[[i]]$param.set$pars)[,c("id", "type", "lower", "upper", "trafo")]
-  if (is.null(nrow(df))) {
-    df$trafo = NA 
-    df = data.frame(df)
-    colnames(df)[1] = "hyperparameter"
-  } else {
-    if (!all(data.frame(df)$trafo == "NULL")) {
-      df = data.frame(df)
-      df$trafo = lapply(df$trafo, function(x) if (!is.null(x)) paste0("$", deparse(x)[2], "$"))
-      df$type[df$type == "numericvector"] = "numeric"
-    } else { 
-      df = data.frame(df)
-      #df = subset(df, select = -trafo) 
-    }
-    colnames(df)[1] = "hyperparameter"
-    df[df=="NULL"] = NA
-  }
-  #print(df)
-  algorithm = c(getLearnerShortName(lrn.par.set[[i]]$learner), rep("", nrow(df)-1))
-  df = cbind(algorithm, df)
-  index[i] = nrow(df)
-  df_total = rbind(df_total, df)
-}
-df_total$trafo$mtry = c("$x \\cdot p$")
-df_total$trafo$min.node.size = c("$n^x$")
-df_total$hyperparameter = gsub("_", "\\_", df_total$hyperparameter, fixed = TRUE)
-
-#df_total
-  print(xtable(df_total, caption = "Hyperparameters of the algorithms. $p$ refers to the number of variables and $n$ to the 
-    number of observations.", digits = 0, label = "tab:parameter"), 
-    NA.string = "-",sanitize.text.function=function(x){gsub("_", "_",x, fixed = TRUE)}, 
-    include.rownames=FALSE, hline.after = c(0, cumsum(index)))
-@
-
+% latex table generated in R 3.4.3 by xtable 1.8-2 package
+% Tue May 08 23:48:31 2018
+\begin{table}[ht]
+\centering
+\begin{tabular}{llrrrr}
+ algorithm & hyperparameter & type & lower & upper & trafo \\ 
+  \hline
+glmnet & alpha & numeric & 0 & 1 & - \\ 
+   & lambda & numeric & -10 & 10 & $2^x$ \\ 
+   \hline
+rpart & cp & numeric & 0 & 1 & - \\ 
+   & maxdepth & integer & 1 & 30 & - \\ 
+   & minbucket & integer & 1 & 60 & - \\ 
+   & minsplit & integer & 1 & 60 & - \\ 
+   \hline
+kknn & k & integer & 1 & 30 & - \\ 
+   \hline
+svm & kernel & discrete & - & - & - \\ 
+   & cost & numeric & -10 & 10 & $2^x$ \\ 
+   & gamma & numeric & -10 & 10 & $2^x$ \\ 
+   & degree & integer & 2 & 5 & - \\ 
+   \hline
+ranger & num.trees & integer & 1 & 2000 & - \\ 
+   & replace & logical & - & - & - \\ 
+   & sample.fraction & numeric & 0 & 1 & - \\ 
+   & mtry & numeric & 0 & 1 & $x \cdot p$ \\ 
+   & respect.unordered.factors & logical & - & - & - \\ 
+   & min.node.size & numeric & 0 & 1 & $n^x$ \\ 
+   \hline
+xgboost & nrounds & integer & 1 & 5000 & - \\ 
+   & eta & numeric & -10 & 0 & $2^x$ \\ 
+   & subsample & numeric & 0 & 1 & - \\ 
+   & booster & discrete & - & - & - \\ 
+   & max\_depth & integer & 1 & 15 & - \\ 
+   & min\_child\_weight & numeric & 0 & 7 & $2^x$ \\ 
+   & colsample\_bytree & numeric & 0 & 1 & - \\ 
+   & colsample\_bylevel & numeric & 0 & 1 & - \\ 
+   & lambda & numeric & -10 & 10 & $2^x$ \\ 
+   & alpha & numeric & -10 & 10 & $2^x$ \\ 
+   \hline
+\end{tabular}
+\caption{Hyperparameters of the algorithms. $p$ refers to the number of variables and $n$ to the 
+    number of observations.} 
+\label{tab:parameter}
+\end{table}
 \subsection{Datasets}
 
 These algorithms were run on a subset of the OpenML100 Benchmark suite \citep{Bischl2017}, which consists of 100 classification datasets
@@ -116,35 +121,59 @@ carefully curated from the thousands of datasets available on OpenML. We only in
 missing data and with a binary outcome resulting in 38 datasets.
 The datasets with their specific characteristics can be found in table~\ref{tab:datasets}.  
 
-<<datasets, echo = FALSE, results=tex,  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
-  library(OpenML)
-  tasks = listOMLTasks(number.of.classes = 2L, number.of.missing.values = 0, 
-    tag = "study_14", estimation.procedure = "10-fold Crossvalidation", status = "active")
-  tasks2 = listOMLTasks(number.of.classes = 2L, number.of.missing.values = 0, 
-    tag = "study_14", estimation.procedure = "10-fold Crossvalidation", status = "deactivated")
-  tasks = rbind(tasks, tasks2)
-  tasks = tasks[, c("data.id", "name", "number.of.instances", "number.of.features", "majority.class.size", 
-    "number.of.numeric.features", "number.of.symbolic.features")]
-  #tasks$majority.class.size = tasks$majority.class.size / tasks$number.of.instances
-  colnames(tasks) = c("Data_id", "Name", "nObs", "nFeat", "majPerc", "numFeat", "catFeat")
-  tasks$majPerc = tasks$majPerc/tasks$nObs
-  
-  load("./data/nr_results.RData")
-  
-  nr_results = nr_results[,which(colnames(nr_results) %in% sort(tasks$Data_id))]
-  # delete these results from the database?
-  # musk with easy perfect classification and two test datasets
-  tasks = tasks[which(sort(tasks$Data_id) %in% colnames(nr_results)), ]
-  # no results for some datasets
-  tasks = tasks[order(tasks$Data_id),]
-  #tasks$Data_id == colnames(nr_results)
-  tasks = cbind(tasks, t(nr_results))
-  colnames(tasks)[8:13] = c("glmnet", "rpart", "kknn", "svm", "ranger", "xgboost")
-  tab = tasks[, c("Data_id", "Name", "nObs", "nFeat", "majPerc", "numFeat", "catFeat")]
-  
-  print(xtable(tab, caption = "Included datasets with meta-data. \\textit{nObs} are the number of observations, \\textit{nFeat} the number of Features, \\textit{majPerc} the percentage of observations with the most common class, \\textit{numFeat} the number of numeric features and \\textit{catFeat} the number of categorical features.", digits = 2, label = "tab:datasets"), digits = 0, include.rownames=FALSE, size = "scriptsize")
-@
-
+% latex table generated in R 3.4.3 by xtable 1.8-2 package
+% Tue May 08 23:48:35 2018
+\begin{table}[ht]
+\centering
+\begingroup\scriptsize
+\begin{tabular}{rlrrrrr}
+  \hline
+Data\_id & Name & nObs & nFeat & majPerc & numFeat & catFeat \\ 
+  \hline
+  3 & kr-vs-kp & 3196 &  37 & 0.52 &   0 &  37 \\ 
+   31 & credit-g & 1000 &  21 & 0.70 &   7 &  14 \\ 
+   37 & diabetes & 768 &   9 & 0.65 &   8 &   1 \\ 
+   44 & spambase & 4601 &  58 & 0.61 &  57 &   1 \\ 
+   50 & tic-tac-toe & 958 &  10 & 0.65 &   0 &  10 \\ 
+  151 & electricity & 45312 &   9 & 0.58 &   7 &   2 \\ 
+  312 & scene & 2407 & 300 & 0.82 & 294 &   6 \\ 
+  333 & monks-problems-1 & 556 &   7 & 0.50 &   0 &   7 \\ 
+  334 & monks-problems-2 & 601 &   7 & 0.66 &   0 &   7 \\ 
+  335 & monks-problems-3 & 554 &   7 & 0.52 &   0 &   7 \\ 
+  1036 & sylva\_agnostic & 14395 & 217 & 0.94 & 216 &   1 \\ 
+  1038 & gina\_agnostic & 3468 & 971 & 0.51 & 970 &   1 \\ 
+  1046 & mozilla4 & 15545 &   6 & 0.67 &   5 &   1 \\ 
+  1049 & pc4 & 1458 &  38 & 0.88 &  37 &   1 \\ 
+  1050 & pc3 & 1563 &  38 & 0.90 &  37 &   1 \\ 
+  1063 & kc2 & 522 &  22 & 0.80 &  21 &   1 \\ 
+  1067 & kc1 & 2109 &  22 & 0.85 &  21 &   1 \\ 
+  1068 & pc1 & 1109 &  22 & 0.93 &  21 &   1 \\ 
+  1120 & MagicTelescope & 19020 &  12 & 0.65 &  11 &   1 \\ 
+  1176 & Internet-Advertisements & 3279 & 1559 & 0.86 & 1558 &   1 \\ 
+  1220 & Click\_prediction\_small & 39948 &  12 & 0.83 &  11 &   1 \\ 
+  1461 & bank-marketing & 45211 &  17 & 0.88 &   7 &  10 \\ 
+  1462 & banknote-authentication & 1372 &   5 & 0.56 &   4 &   1 \\ 
+  1464 & blood-transfusion-service-center & 748 &   5 & 0.76 &   4 &   1 \\ 
+  1467 & climate-model-simulation-crashes & 540 &  21 & 0.91 &  20 &   1 \\ 
+  1471 & eeg-eye-state & 14980 &  15 & 0.55 &  14 &   1 \\ 
+  1479 & hill-valley & 1212 & 101 & 0.50 & 100 &   1 \\ 
+  1480 & ilpd & 583 &  11 & 0.71 &   9 &   2 \\ 
+  1485 & madelon & 2600 & 501 & 0.50 & 500 &   1 \\ 
+  1486 & nomao & 34465 & 119 & 0.71 &  89 &  30 \\ 
+  1487 & ozone-level-8hr & 2534 &  73 & 0.94 &  72 &   1 \\ 
+  1489 & phoneme & 5404 &   6 & 0.71 &   5 &   1 \\ 
+  1504 & steel-plates-fault & 1941 &  34 & 0.65 &  33 &   1 \\ 
+  1510 & wdbc & 569 &  31 & 0.63 &  30 &   1 \\ 
+  1570 & wilt & 4839 &   6 & 0.95 &   5 &   1 \\ 
+  4134 & Bioresponse & 3751 & 1777 & 0.54 & 1776 &   1 \\ 
+  4135 & Amazon\_employee\_access & 32769 &  10 & 0.94 &   0 &  10 \\ 
+  4534 & PhishingWebsites & 11055 &  31 & 0.56 &   0 &  31 \\ 
+   \hline
+\end{tabular}
+\endgroup
+\caption{Included datasets with meta-data. \textit{nObs} are the number of observations, \textit{nFeat} the number of Features, \textit{majPerc} the percentage of observations with the most common class, \textit{numFeat} the number of numeric features and \textit{catFeat} the number of categorical features.} 
+\label{tab:datasets}
+\end{table}
 \subsection{Execution of the bot}
 
 Following the search paradigm of random search the bot iteratively executes several steps:
@@ -181,16 +210,61 @@ In total this results in around 2.5 million experiments.
 
 The distribution of the runs on the datasets and algorithms can be seen in table~\ref{tab:datasets2}.
 
-<<tbl_results, echo = FALSE, results=tex,  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
-tab = tasks[, c("Data_id", "glmnet", "rpart", "kknn", "svm", "ranger", "xgboost")]
-  tab = cbind(tab, rowSums(tab[,2:7]))
-  tab = rbind(tab, colSums(tab))
-  tab[nrow(tab),1] = "Total"
-  colnames(tab)[ncol(tab)] = "Total"
-
-  print(xtable(tab, caption = "Number of results by dataset and algorithm", digits = 0, label = "tab:datasets2"), digits = 0, include.rownames=FALSE, size = "scriptsize", hline.after = c(-1, 0, nrow(tab)-1, nrow(tab)))
-@
-
+% latex table generated in R 3.4.3 by xtable 1.8-2 package
+% Tue May 08 23:48:35 2018
+\begin{table}[ht]
+\centering
+\begingroup\scriptsize
+\begin{tabular}{lrrrrrrr}
+  \hline
+Data\_id & glmnet & rpart & kknn & svm & ranger & xgboost & Total \\ 
+  \hline
+3 & 15547 & 14633 & 30 & 19644 & 15139 & 16867 & 81860 \\ 
+  31 & 15547 & 14633 & 30 & 19644 & 15139 & 16867 & 81860 \\ 
+  37 & 15546 & 14633 & 30 & 15985 & 15139 & 16866 & 78199 \\ 
+  44 & 15547 & 14633 & 30 & 19644 & 15139 & 16867 & 81860 \\ 
+  50 & 15547 & 14633 & 30 & 19644 & 15139 & 16866 & 81859 \\ 
+  151 & 15547 & 14632 & 30 & 2384 & 12517 & 16866 & 61976 \\ 
+  312 & 6613 & 13455 & 30 & 18740 & 12985 & 15886 & 67709 \\ 
+  333 & 15546 & 14632 & 30 & 19644 & 15139 & 16867 & 81858 \\ 
+  334 & 15547 & 14633 & 30 & 19644 & 14492 & 16867 & 81213 \\ 
+  335 & 15547 & 14633 & 30 & 15123 & 15139 & 10002 & 70474 \\ 
+  1036 & 14937 & 14633 & 30 & 2338 & 7397 & 2581 & 41916 \\ 
+  1038 & 15547 & 5151 & 30 & 5716 & 4827 & 1370 & 32641 \\ 
+  1046 & 6466 & 14633 & 30 & 10121 & 3788 & 16867 & 51905 \\ 
+  1049 & 15547 & 14633 & 30 & 5422 & 8842 & 11812 & 56286 \\ 
+  1050 & 7423 & 14632 & 30 & 12064 & 15139 & 4453 & 53741 \\ 
+  1063 & 15547 & 14633 & 30 & 19644 & 11357 & 13758 & 74969 \\ 
+  1067 & 15547 & 14633 & 30 & 19644 & 7914 & 16866 & 74634 \\ 
+  1068 & 15546 & 14632 & 30 & 10229 & 7386 & 16866 & 64689 \\ 
+  1120 & 15546 & 14633 & 30 & 13893 & 8173 & 16866 & 69141 \\ 
+  1176 & 15531 & 7477 & 30 & 3908 & 9760 & 8143 & 44849 \\ 
+  1220 & 13005 & 14632 & 30 & 14451 & 15140 & 13047 & 70305 \\ 
+  1461 & 6970 & 14073 & 30 & 2678 & 14323 & 2215 & 40289 \\ 
+  1462 & 8955 & 14633 & 30 & 6320 & 15139 & 16867 & 61944 \\ 
+  1464 & 15547 & 14632 & 30 & 19644 & 15139 & 16867 & 81859 \\ 
+  1467 & 15547 & 14633 & 30 & 4441 & 15139 & 16866 & 66656 \\ 
+  1471 & 15547 & 14633 & 30 & 9725 & 13523 & 16866 & 70324 \\ 
+  1479 & 15546 & 14633 & 30 & 19644 & 15140 & 16867 & 81860 \\ 
+  1480 & 15024 & 14633 & 30 & 19644 & 15139 & 16254 & 80724 \\ 
+  1485 & 8247 & 10923 & 30 & 10334 & 15139 & 9237 & 53910 \\ 
+  1486 & 3866 & 11389 & 30 & 1490 & 15139 & 5813 & 37727 \\ 
+  1487 & 15547 & 6005 & 30 & 19644 & 15139 & 11194 & 67559 \\ 
+  1489 & 15547 & 14633 & 30 & 17298 & 15139 & 16867 & 79514 \\ 
+  1504 & 15547 & 14632 & 30 & 19644 & 15139 & 16867 & 81859 \\ 
+  1510 & 15547 & 14633 & 30 & 19644 & 15140 & 16867 & 81861 \\ 
+  1570 & 15547 & 14633 & 30 & 19644 & 15139 & 16867 & 81860 \\ 
+  4134 & 15546 & 14632 & 30 & 19644 & 15139 & 16867 & 81858 \\ 
+  4135 & 1493 & 3947 & 30 & 560 & 14516 & 2222 & 22768 \\ 
+  4534 & 2801 & 3231 & 30 & 2476 & 15139 & 947 & 24624 \\ 
+   \hline
+Total & 500000 & 500000 & 1140 & 500000 & 500000 & 500000 & 2501140 \\ 
+   \hline
+\end{tabular}
+\endgroup
+\caption{Number of results by dataset and algorithm} 
+\label{tab:datasets2}
+\end{table}
 \section{Access to the benchmark results}
 
 The results of the benchmarks can be accessed in different ways:
