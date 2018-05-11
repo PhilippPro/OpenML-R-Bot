@@ -41,8 +41,6 @@
 
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
-
 
 \title{Automatic Exploration of Machine Learning Experiments on OpenML}
 \author{by Daniel Kühn*, Philipp Probst*, Janek Thomas and Bernd Bischl}
@@ -57,7 +55,7 @@ Understanding the influence of hyperparameters on the performance of a machine l
 
 When applying machine learning on real world datasets, users have to choose from a large selection of different machine learning algorithms with many of these algorithms offering a set of hyperparameters, which can be specified by the user and can have a significant influence on the performance of the algorithm. Since there is no free lunch in algorithm selection and one can not expect one algorithm to outperform all the others \citep{Wolpert2001}, a crucial question practitioners have to face on a daily basis therefore is the selection of the "right" algorithm with the "right" hyperparameters for a given dataset. This problem is not easy to solve, because choices are many, the evaluation of a single machine learning run usally is computationally expensive and the hyperparameter-space is complex \citep{Claesen2015}. A usual approach is to run a tuning algorithm like bayesian optimization to find the best hyperparameter setting. While showing promising results, bayesian optimization and other hyperparameter optimization techniques require a large overhead. 
 
-Meta-learning tries to decrease this overhead \citep{Feurer2015}, by using information of previous algorithm runs on other datasets. A requirement for this, is to have a meta-learning dataset, that contains the information of previous runs. With this paper we provide a open accesible dataset that contains information of previous runs of six different machine learning algorithms on 38 classification datasets. As large datasets like Imagenet \citep{ImageNet2009} have shown to improve the progress of machine learning, we hope to support the development of new meta-learning algorithms with this dataset. While similar meta-datasets were created in the past, we were not able to access them by the links provided in their respective papers: \citet{2014arXiv1405.7292S} provide a repository of with weka-based machine learning experiments on 72 data sets, 9 machine learning algorithms, 10 hyperparameter settings for each algorithm, and several meta-features of each data set. \citet{Reif2012ACD} also created a meta-dataset based on machine learning experiments on 83 datasets, 6 classification algorithms, and 49 meta-features. 
+Meta-learning tries to decrease this overhead \citep{Feurer2015}, by using information of previous algorithm runs on other datasets. A requirement for this, is to have a meta-learning dataset, that contains the information of previous runs. With this paper we provide an open accesible dataset that contains information of previous runs of six different machine learning algorithms on 38 classification datasets. As large datasets like Imagenet \citep{ImageNet2009} have shown to improve the progress of machine learning, we hope to support the development of new meta-learning algorithms with this dataset. While similar meta-datasets were created in the past, we were not able to access them by the links provided in their respective papers: \citet{2014arXiv1405.7292S} provide a repository with weka-based machine learning experiments on 72 data sets, 9 machine learning algorithms, 10 hyperparameter settings for each algorithm, and several meta-features of each data set. \citet{Reif2012ACD} also created a meta-dataset based on machine learning experiments on 83 datasets, 6 classification algorithms, and 49 meta-features. 
 
 We first describe how we created such a meta-dataset by executing random machine learning experiments and storing the results on OpenML \citep{OpenML2013}, an open source database for machine learning problems. Then the possibilities of accessing this dataset are shortly presented. Finally we briefly discuss potential usage of the dataset. 
 
@@ -68,7 +66,7 @@ We first describe how we created such a meta-dataset by executing random machine
 
 To create the dataset the following six supervised machine learning algorithms were run with predefined ranges for their relevant hyperparameters on 38 classification tasks: elastic net (\texttt{glmnet}), decision tree (\texttt{rpart}), k-nearest neighbors (\texttt{kknn}), support vector machines (\texttt{svm}), random forest (\texttt{ranger}) and gradient boosting (\texttt{xgboost}). These algorithms cover a broad range of approaches to machine learning. For each algorithm the available hyperparameters were explored in a predefined range (see table~\ref{tab:parameter}). Values of some of these ranges were transformed by the function found in column \textit{trafo} to explore the range in a non-uniform manner. This is useful, if e.g. minor changes in a hyperparameter are not expected to have a significant impact on the performance of an algorithm.
 
-<<parameter, echo = FALSE, results=tex,  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
+<<parameter, echo = FALSE, results='asis',  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
 library(xtable)
 suppressWarnings(library(mlr))
 load("./data/parameter_settings.RData")
@@ -116,7 +114,7 @@ carefully curated from the thousands of datasets available on OpenML. We only in
 missing data and with a binary outcome resulting in 38 datasets.
 The datasets with their specific characteristics can be found in table~\ref{tab:datasets}.  
 
-<<datasets, echo = FALSE, results=tex,  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
+<<datasets, echo = FALSE, results='asis',  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
   library(OpenML)
   tasks = listOMLTasks(number.of.classes = 2L, number.of.missing.values = 0, 
     tag = "study_14", estimation.procedure = "10-fold Crossvalidation", status = "active")
@@ -181,7 +179,7 @@ In total this results in around 2.5 million experiments.
 
 The distribution of the runs on the datasets and algorithms can be seen in table~\ref{tab:datasets2}.
 
-<<tbl_results, echo = FALSE, results=tex,  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
+<<tbl_results, echo = FALSE, results='asis',  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
 tab = tasks[, c("Data_id", "glmnet", "rpart", "kknn", "svm", "ranger", "xgboost")]
   tab = cbind(tab, rowSums(tab[,2:7]))
   tab = rbind(tab, colSums(tab))
