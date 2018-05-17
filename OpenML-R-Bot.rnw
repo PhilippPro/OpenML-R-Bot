@@ -3,6 +3,9 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
+\usepackage[a4paper,%bindingoffset=0.2in,
+            left=1.4in,right=1.4in,top=1.4in,bottom=1.4in%,footskip=.25in
+            ]{geometry}
 
 \usepackage{amsthm,amsmath,amssymb,amstext} 
 \usepackage{booktabs}
@@ -155,11 +158,9 @@ Following the search paradigm of random search the bot iteratively executes seve
 \item Upload the benchmark results with hyperparameters, performance measures and time measurements to OpenML with the tag \texttt{mlrRandomBot} used for identification
 \end{enumerate}
 
-
-An advantage of using random search instead of other methods like grid search is that further experiments can be easily added to the existing ones. One could for example easily increase the hyperparameter space for a specific algorithm or add a complete new algorithm by just adding new experiments to the existing ones. 
+An advantage of using random search instead of other methods like grid search is that further experiments can be easily added to the existing ones. One could for example easily increase the hyperparameter space for a specific algorithm or add a complete new algorithm by just adding new experiments to the existing ones. Moreover, random search is more efficient in covering multidimensional hyperparameter spaces and finding optimal hyperparameter settings \citep{Bergstra2012}.
 
 The code for the bot can be found on GitHub (\url{https://GitHub.com/ja-thomas/OMLbots}). Further algorithms can be easily added by adding an algorithm with specific hyperparameters in the \texttt{R/botSetLearnerParamPairs.R} file of the GitHub repository. The main function \texttt{runBot} executes the bot with specific settings (number of experiments, temporary file, sample configurations, etc.).
-
 The R packages \texttt{mlr} \citep{Bischl2016} 
 and \texttt{OpenML} \citep{Casalicchio2017} were used for the whole process. 
 
@@ -209,6 +210,7 @@ This can be used to:
 \begin{itemize}
 \item Find good defaults for the algorithms that work well on many datasets
 \item Measure differences between the algorithms
+\newpage
 \item Optimize tuning algorithms:
 \begin{itemize}
 \item Measure the tunability of algorithms and find out which parameters should be tuned \citep[see][]{Probst20182}
@@ -222,7 +224,7 @@ on a specific dataset
 
 A potential weakness of this dataset is that the dimension of the hyperparameters for e.g. \texttt{xgboost} is very high and the number of experiments is not high enough to explore the regions appropriately, especially regions where very high performance can be achieved. This could potentially be improved by using a tuning algorithm and by adding the results of the tuning steps to the existing database. 
 
-
+\newpage
 \bibliography{bot}
  
 \end{document}

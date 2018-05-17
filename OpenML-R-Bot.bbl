@@ -1,9 +1,15 @@
-\begin{thebibliography}{12}
+\begin{thebibliography}{13}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bergstra and Bengio(2012)]{Bergstra2012}
+J.~Bergstra and Y.~Bengio.
+\newblock Random search for hyper-parameter optimization.
+\newblock \emph{Journal of Machine Learning Research}, 13\penalty0
+  (Feb):\penalty0 281--305, 2012.
 
 \bibitem[Bischl et~al.(2016)Bischl, Lang, Kotthoff, Schiffner, Richter,
   Studerus, Casalicchio, and Jones]{Bischl2016}
