@@ -55,11 +55,10 @@ M.~Feurer, J.~T. Springenberg, and F.~Hutter.
 \newblock Initializing bayesian hyperparameter optimization via meta-learning.
 \newblock 2015.
 
-\bibitem[Probst and Kühn(2018)]{Probst2018}
-P.~Probst and D.~Kühn.
-\newblock {OpenML R Bot Benchmark Data (final subset)}.
-\newblock 2 2018.
-\newblock \doi{10.6084/m9.figshare.5882230.v1}.
+\bibitem[Kühn et~al.(2018)Kühn, Probst, Thomas, and Bischl]{Kuehn2018}
+D.~Kühn, P.~Probst, J.~Thomas, and B.~Bischl.
+\newblock {{OpenML R} bot benchmark data (final subset)}.
+\newblock 2018.
 \newblock URL
   \url{https://figshare.com/articles/OpenML_R_Bot_Benchmark_Data_final_subset_/5882230}.
 
