@@ -188,7 +188,7 @@ tab = tasks[, c("Data_id", "glmnet", "rpart", "kknn", "svm", "ranger", "xgboost"
   tab[nrow(tab),1] = "Total"
   colnames(tab)[ncol(tab)] = "Total"
 
-  print(xtable(tab, caption = "Number of results by dataset and algorithm", digits = 0, label = "tab:datasets2"), digits = 0, include.rownames=FALSE, size = "scriptsize", hline.after = c(-1, 0, nrow(tab)-1, nrow(tab)))
+  print(xtable(tab, caption = "Number of experiments for each combination of dataset and algorithm.", digits = 0, label = "tab:datasets2"), digits = 0, include.rownames=FALSE, size = "scriptsize", hline.after = c(-1, 0, nrow(tab)-1, nrow(tab)))
 @
 
 \section{Discussion and potential usage of the results}
