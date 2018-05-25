@@ -42,6 +42,7 @@
 \usepackage{adjustbox}
 \usepackage{setspace}
 
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
 
 \begin{document}
 
@@ -51,7 +52,7 @@
 \maketitle
 
 \begin{abstract}
-Understanding the influence of hyperparameters on the performance of a machine learning algorithm is an important requirement for well performing and adequately tuned algorithms. As to date, data to help this required understanding of state-of-the-art algorithms like gradient boosting or random forest are rare, this paper presents a large, free and open dataset addressing this problem (see \citep{Kuehn2018} to access the dataset). The dataset contains the performance (AUC, accuracy and Brier score) of six different machine learning algorithms with randomly sampled hyperparameters, runtime and meta-data for $38$ datasets. Each algorithm was cross-validated up to $500.000$ times with different hyperparameters resulting in a dataset of around $2.5$ million experiments overall. Such data can be invaluable for meta-learning, benchmarking and other tasks related to hyperparameters like finding good defaults or measuring the tunability of algorithms and hyperparameters. %The contained algorithms are elastic net (glmnet R-package), decision tree (rpart), k-nearest neighbors (kknn), support vector machine (e1071), random forest (ranger) and extreme gradient boosting (xgboost).
+Understanding \todo{PP: Satz klingt komisch} the influence of hyperparameters on the performance of a machine learning algorithm is an important requirement for well performing and adequately tuned algorithms. As to date, data to help this required understanding of state-of-the-art algorithms like gradient boosting or random forest are rare, this paper presents a large, free and open dataset addressing this problem (see \citep{Kuehn2018} to access the dataset). The dataset contains the performance (AUC, accuracy and Brier score) of six different machine learning algorithms with randomly sampled hyperparameters, runtime and meta-data for $38$ datasets. Each algorithm was cross-validated up to $500000$ times with different hyperparameters resulting in a dataset of around $2.5$ million experiments overall. Such data can be invaluable for meta-learning, benchmarking and other tasks related to hyperparameters like finding good defaults or measuring the tunability of algorithms and hyperparameters. %The contained algorithms are elastic net (glmnet R-package), decision tree (rpart), k-nearest neighbors (kknn), support vector machine (e1071), random forest (ranger) and extreme gradient boosting (xgboost).
 \end{abstract}
 
 
@@ -59,21 +60,13 @@ Understanding the influence of hyperparameters on the performance of a machine l
 
 When applying machine learning algorithms on real world datasets, users have to choose from a large selection of different algorithms with many of them offering a set of hyperparameters. Even though sometimes default values exist, they can be suboptimal and need to be specified by the user which often has large influence on the performance of the algorithm. The \textit{no free lunch theorem} \citep{Wolpert2001} states that in algorithm selection one algorithm can not consistently outperform all others algorithms for every dataset, so a crucial question practitioners have to face on a daily basis therefore is the selection of the best algorithm with optimal hyperparameters for a given dataset. This problem is very hard to solve, since many algorithms exist, the evaluation of a single machine learning run is often computationally expensive and the hyperparameter-space is complex \citep{Claesen2015}. The usual approach is to run a hyperparameter tuning algorithm like random search, grid search or Bayesian optimization \citep{snoek2012practical} to find the best hyperparameter setting. These methods have the drawback that a large number of runs might be necessary which can result in very high computational costs.
 
-Meta-learning tries to decrease this cost \citep{Feurer2015}, by reusing information of previous runs of the algorithm on other datasets. A requirement for this, is to have a meta-learning dataset, that contains such information. With this paper we provide an freely accessible dataset that contains around $2.5$ million runs of six different machine learning algorithms on $38$ classification datasets. Large, freely available datasets like Imagenet \citep{ImageNet2009} are important for the progress of machine learning, we hope to support the development in the area of meta-learning and benchmarking with this dataset. While similar meta-datasets were created in the past, we were not able to access them by the links provided in their respective papers: \citet{2014arXiv1405.7292S} provides a repository with Weka-based machine learning experiments on 72 data sets, 9 machine learning algorithms, 10 hyperparameter settings for each algorithm, and several meta-features of each data set. \citet{Reif2012ACD} created a meta-dataset based on machine learning experiments on 83 datasets, 6 classification algorithms, and 49 meta-features.
+Meta-learning tries to decrease this cost \citep{Feurer2015}, by reusing information of previous runs of the algorithm on other datasets. A requirement for this, is to have a meta-learning dataset, that contains such information. With this paper we provide a freely accessible dataset that contains around $2.5$ million runs of six different machine learning algorithms on $38$ classification datasets. Large, freely available datasets like Imagenet \citep{ImageNet2009} are important for the progress of machine learning, so we hope to support the development in the area of meta-learning and benchmarking with this dataset. While similar meta-datasets were created in the past, we were not able to access them by the links provided in their respective papers: \citet{2014arXiv1405.7292S} provides a repository with Weka-based machine learning experiments on 72 data sets, 9 machine learning algorithms, 10 hyperparameter settings for each algorithm, and several meta-features of each data set. \citet{Reif2012ACD} created a meta-dataset based on machine learning experiments on 83 datasets, 6 classification algorithms, and 49 meta-features.
 
-%We first describe how the meta-dataset is created by executing random machine learning experiments and storing the results on OpenML \citep{OpenML2013}, an open source database for machine learning problems. Then the possibilities of accessing this dataset are shortly presented. Finally we briefly discuss potential usage of the dataset.
-
-The results of the benchmark can be accessed in different ways:
-
-\begin{itemize}
-\item The easiest way to access them is to go to the figshare repository \citep{Kuehn2018} and download the \texttt{.csv} files or the \texttt{.RData} file.
-\item Alternatively the code for the extraction of the data from the nightly database snapshot of OpenML can
-be found here: \url{https://github.com/ja-thomas/OMLbots/blob/master/snapshot_database/database_extraction.R}
-\end{itemize}
+In this paper we first describe how the meta-dataset is created by executing random machine learning experiments and storing the results on OpenML \citep{OpenML2013}, an open source database for machine learning problems. Then the possibilities of accessing this dataset are shortly presented. Finally we briefly discuss potential usage of the dataset.
 
 \section{Creating the dataset}
 
-To create the dataset the following six supervised machine learning algorithms implemented in R are run with predefined ranges for their relevant hyperparameters on 38 classification tasks: elastic net (\texttt{glmnet} \citep{glmnet}), decision tree (\texttt{rpart}, \citep{rpart}), k-nearest neighbors (\texttt{kknn}, \citep{kknn}), support vector machines (\texttt{svm}, \citep{svm}), random forest (\texttt{ranger}, \citep{ranger}) and gradient boosting (\texttt{xgboost}, \citep{xgboost}). These algorithms cover a wides range of approaches to machine learning. For each algorithm the available hyperparameters are explored in a predefined range (see Table~\ref{tab:parameter}). Some of these hyperparameters are transformed by the function found in column \textit{trafo} to sample from the range non-uniformly. This is an often , if e.g. minor changes in a hyperparameter are not expected to have a significant impact on the performance of an algorithm.
+To create the dataset the following six supervised machine learning algorithms implemented in R are run with predefined ranges for their relevant hyperparameters on 38 classification tasks: elastic net (\texttt{glmnet} \citep{glmnet})\todo{PP: Zitierungen stören den Textfluss}, decision tree (\texttt{rpart}, \citep{rpart}), k-nearest neighbors (\texttt{kknn}, \citep{kknn}), support vector machines (\texttt{svm}, \citep{svm}), random forest (\texttt{ranger}, \citep{ranger}) and gradient boosting (\texttt{xgboost}, \citep{xgboost}) . These algorithms cover a wide range of approaches to machine learning. For each algorithm the available hyperparameters are explored in a predefined range (see Table~\ref{tab:parameter}). Some of these hyperparameters are transformed by the function found in column \textit{trafo} to sample from the range non-uniformly. This is an often performed procedure, if e.g. minor changes in a hyperparameter are not expected to have a significant impact on the performance of an algorithm.
 
 <<parameter, echo = FALSE, results='asis',  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
 library(xtable)
@@ -117,7 +110,7 @@ df_total$hyperparameter = gsub("_", "\\_", df_total$hyperparameter, fixed = TRUE
 @
 
 These algorithms are run on a subset of the OpenML100 Benchmark suite \citep{Bischl2017}, which consists of 100 classification datasets
-carefully curated from the thousands of datasets available on OpenML. We only include datasets without
+carefully curated from the thousands of datasets available on OpenML \citep{OpenML2013}. We only include datasets without
 missing data and with a binary outcome resulting in 38 datasets.
 The datasets with their specific characteristics can be found in Table~\ref{tab:datasets}.
 
@@ -166,14 +159,14 @@ Following the search paradigm of random search the bot iteratively executes seve
 
 An advantage of using random search instead of other tuning methods like grid search is that additional experiments can be easily added to existing ones. One could for example easily increase the hyperparameter range for a specific algorithm or add a new algorithm simply by adding new experiments to existing ones. Moreover, random search is more efficient in covering multidimensional hyperparameter spaces and finding optimal hyperparameter settings \citep{Bergstra2012}.
 
-The bot is developed open source and can be found on GitHub (\url{https://github.com/ja-thomas/OMLbots}). To add a new algorithm it has to be included in the \texttt{R/botSetLearnerParamPairs.R} file of the GitHub repository with with its hyperparameter ranges. The main function \texttt{runBot} executes the bot with a predefined number of experiments.
+The bot is developed open source and can be found on GitHub (\url{https://github.com/ja-thomas/OMLbots}). To add a new algorithm it has to be included in the file \texttt{R/botSetLearnerParamPairs.R} of the GitHub repository with with its hyperparameter ranges. The main function \texttt{runBot} executes the bot with a predefined number of experiments.
 The bot is based on the R packages \texttt{mlr} \citep{Bischl2016} and \texttt{OpenML} \citep{Casalicchio2017} and written in modular form such that it can be extended with new sampling strategies for hyperparameters, algorithms and datasets in the future.
 
 After more than $6$ million benchmark experiments the results of the bot are downloaded from OpenML.
-Since on dataset $4135$ all algorithms except of \texttt{rpart} and \texttt{ranger} crashed is is excluded and $38$ datasets remain.
+Since on dataset $4135$ all algorithms except of \texttt{rpart} and \texttt{ranger} crashed, it is excluded and $38$ datasets remain.
 
 For each of the algorithms $500.000$ experiments are used to obtain a final dataset.
-The experiments are chosen by the following procedure: for each algorithm, a threshold $B$ is set (see below) and, if the number of results for a dataset exceeds $B$, we draw randomly $B$ of the results obtained for this algorithm and this dataset. For each algorithm, the threshold value $B$ is chosen for each algorithm separately to exactly obtain 500000 results for each algorithm.
+The experiments are chosen by the following procedure: for each algorithm, a threshold $B$ is set (see below) and, if the number of results for a dataset exceeds $B$, we draw randomly $B$ of the results obtained for this algorithm and this dataset. The threshold value $B$ is chosen for each algorithm separately to exactly obtain 500000 results for each algorithm.
 
 For \texttt{kknn} we only execute 30 experiments per dataset because this number of experiments is high enough
 to cover the hyperparameter space (that only consists of the parameter $k$ for $k \in \{1,...,30\}$) appropriately, resulting in 1140 experiments.
@@ -190,6 +183,15 @@ tab = tasks[, c("Data_id", "glmnet", "rpart", "kknn", "svm", "ranger", "xgboost"
 
   print(xtable(tab, caption = "Number of experiments for each combination of dataset and algorithm.", digits = 0, label = "tab:datasets2"), digits = 0, include.rownames=FALSE, size = "scriptsize", hline.after = c(-1, 0, nrow(tab)-1, nrow(tab)))
 @
+
+\section{Access to the results}
+The results of the benchmark can be accessed in different ways:
+
+\begin{itemize}
+\item The easiest way to access them is to go to the figshare repository \citep{Kuehn2018} and download the \texttt{.csv} files or the \texttt{.RData} file.
+\item Alternatively the code for the extraction of the data from the nightly database snapshot of OpenML can
+be found here: \url{https://github.com/ja-thomas/OMLbots/blob/master/snapshot_database/database_extraction.R}
+\end{itemize}
 
 \section{Discussion and potential usage of the results}
 
