@@ -188,7 +188,7 @@ tab = tasks[, c("Data_id", "glmnet", "rpart", "kknn", "svm", "ranger", "xgboost"
 The results of the benchmark can be accessed in different ways:
 
 \begin{itemize}
-\item The easiest way to access them is to go to the figshare repository \citep{Kuehn2018} and download the \texttt{.csv} files or the \texttt{.RData} file.
+\item The easiest way to access them is to go to the figshare repository \citep{Kuehn2018} and download the \texttt{.csv} files or the \texttt{.RData} file. \todo{PP: Format ändern auf feather (?) und auf OpenML hochladen (?)}
 \item Alternatively the code for the extraction of the data from the nightly database snapshot of OpenML can
 be found here: \url{https://github.com/ja-thomas/OMLbots/blob/master/snapshot_database/database_extraction.R}
 \end{itemize}
