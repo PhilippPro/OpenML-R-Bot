@@ -24,8 +24,9 @@ B.~Bischl, M.~Lang, L.~Kotthoff, J.~Schiffner, J.~Richter, E.~Studerus,
   {Lang}, {Mantovani}, {van Rijn}, and {Vanschoren}]{Bischl2017}
 B.~{Bischl}, G.~{Casalicchio}, M.~{Feurer}, F.~{Hutter}, M.~{Lang}, R.~G.
   {Mantovani}, J.~N. {van Rijn}, and J.~{Vanschoren}.
-\newblock {OpenML Benchmarking Suites and the OpenML100}.
-\newblock \emph{ArXiv e-prints}, Aug. 2017.
+\newblock {{OpenML} benchmarking suites and the {OpenML100}}.
+\newblock \emph{ArXiv preprint arXiv:1708.03731}, Aug. 2017.
+\newblock URL \url{https://arxiv.org/abs/1708.03731}.
 
 \bibitem[Casalicchio et~al.(2017)Casalicchio, Bossek, Lang, Kirchhoff,
   Kerschke, Hofner, Seibold, Vanschoren, and Bischl]{Casalicchio2017}
@@ -35,7 +36,6 @@ G.~Casalicchio, J.~Bossek, M.~Lang, D.~Kirchhoff, P.~Kerschke, B.~Hofner,
   {OpenML}}.
 \newblock \emph{Computational Statistics}, 32\penalty0 (3):\penalty0 1--15,
   2017.
-\newblock \doi{10.1007/s00180-017-0742-2}.
 
 \bibitem[Chen and Guestrin(2016)]{xgboost}
 T.~Chen and C.~Guestrin.
@@ -61,7 +61,8 @@ J.~Deng, W.~Dong, R.~Socher, L.~jia Li, K.~Li, and L.~Fei-fei.
 \bibitem[Feurer et~al.(2015)Feurer, Springenberg, and Hutter]{Feurer2015}
 M.~Feurer, J.~T. Springenberg, and F.~Hutter.
 \newblock Initializing bayesian hyperparameter optimization via meta-learning.
-\newblock 2015.
+\newblock In \emph{Proceedings of the Twenty-Ninth AAAI Conference on
+  Artificial Intelligence}, pages 1128--1135. AAAI Press, 2015.
 
 \bibitem[Friedman et~al.(2010)Friedman, Hastie, and Tibshirani]{glmnet}
 J.~Friedman, T.~Hastie, and R.~Tibshirani.
@@ -69,7 +70,6 @@ J.~Friedman, T.~Hastie, and R.~Tibshirani.
   descent.
 \newblock \emph{Journal of Statistical Software}, 33\penalty0 (1):\penalty0
   1--22, 2010.
-\newblock URL \url{http://www.jstatsoft.org/v33/i01/}.
 
 \bibitem[Kühn et~al.(2018)Kühn, Probst, Thomas, and Bischl]{Kuehn2018}
 D.~Kühn, P.~Probst, J.~Thomas, and B.~Bischl.
@@ -85,13 +85,6 @@ D.~Meyer, E.~Dimitriadou, K.~Hornik, A.~Weingessel, and F.~L. h.
 \newblock URL \url{https://CRAN.R-project.org/package=e1071}.
 \newblock R package version 1.6-8.
 
-\bibitem[{Probst} et~al.(2018){Probst}, {Bischl}, and
-  {Boulesteix}]{Probst20182}
-P.~{Probst}, B.~{Bischl}, and A.-L. {Boulesteix}.
-\newblock {Tunability: Importance of Hyperparameters of Machine Learning
-  Algorithms}.
-\newblock \emph{ArXiv preprints arXiv:1703.03373}, 2018.
-
 \bibitem[Reif(2012)]{Reif2012ACD}
 M.~Reif.
 \newblock A comprehensive dataset for evaluating approaches of various
@@ -105,11 +98,12 @@ K.~Schliep and K.~Hechenbichler.
 \newblock R package version 1.3.1.
 
 \bibitem[{Smith} et~al.(2014){Smith}, {White}, {Giraud-Carrier}, and
-  {Martinez}]{2014arXiv1405.7292S}
+  {Martinez}]{Smith2014}
 M.~R. {Smith}, A.~{White}, C.~{Giraud-Carrier}, and T.~{Martinez}.
 \newblock {An Easy to Use Repository for Comparing and Improving Machine
   Learning Algorithm Usage}.
-\newblock \emph{ArXiv e-prints}, May 2014.
+\newblock \emph{ArXiv preprint arXiv:1405.7292}, 2014.
+\newblock URL \url{https://arxiv.org/abs/1405.7292}.
 
 \bibitem[Snoek et~al.(2012)Snoek, Larochelle, and Adams]{snoek2012practical}
 J.~Snoek, H.~Larochelle, and R.~P. Adams.
@@ -123,16 +117,22 @@ T.~Therneau and B.~Atkinson.
 \newblock URL \url{https://CRAN.R-project.org/package=rpart}.
 \newblock R package version 4.1-12.
 
+\bibitem[{van Rijn} and {Hutter}(2017)]{Rijn2017}
+J.~N. {van Rijn} and F.~{Hutter}.
+\newblock {Hyperparameter importance across datasets}.
+\newblock \emph{ArXiv preprint arXiv:1710.04725}, 2017.
+\newblock URL \url{https://arxiv.org/abs/1710.04725}.
+
 \bibitem[Vanschoren et~al.(2013)Vanschoren, van Rijn, Bischl, and
   Torgo]{OpenML2013}
 J.~Vanschoren, J.~N. van Rijn, B.~Bischl, and L.~Torgo.
 \newblock {{OpenML}: Networked Science in Machine Learning}.
 \newblock \emph{SIGKDD Explorations}, 15\penalty0 (2):\penalty0 49--60, 2013.
 
-\bibitem[Wolpert(2001)]{Wolpert2001}
+\bibitem[Wolpert(2002)]{Wolpert2001}
 D.~H. Wolpert.
 \newblock The supervised learning no-free-lunch theorems.
-\newblock 2001.
+\newblock In \emph{Soft computing and industry}, pages 25--42. Springer, 2002.
 
 \bibitem[Wright and Ziegler(2017)]{ranger}
 M.~N. Wright and A.~Ziegler.
@@ -140,6 +140,5 @@ M.~N. Wright and A.~Ziegler.
   dimensional data in {C++} and {R}.
 \newblock \emph{Journal of Statistical Software}, 77\penalty0 (1):\penalty0
   1--17, 2017.
-\newblock \doi{10.18637/jss.v077.i01}.
 
 \end{thebibliography}
