@@ -15,7 +15,7 @@ J.~Bergstra and Y.~Bengio.
   Studerus, Casalicchio, and Jones]{Bischl2016}
 B.~Bischl, M.~Lang, L.~Kotthoff, J.~Schiffner, J.~Richter, E.~Studerus,
   G.~Casalicchio, and Z.~M. Jones.
-\newblock mlr: Machine learning in r.
+\newblock mlr: Machine learning in {R}.
 \newblock \emph{Journal of Machine Learning Research}, 17\penalty0
   (170):\penalty0 1--5, 2016.
 \newblock URL \url{http://jmlr.org/papers/v17/15-066.html}.

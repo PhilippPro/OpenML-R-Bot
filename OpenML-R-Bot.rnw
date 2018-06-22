@@ -66,7 +66,7 @@ In this paper we first describe how the meta-dataset is created by executing ran
 
 \section{Creating the dataset}
 
-To create the dataset the following six supervised machine learning algorithms implemented in R are run on 38 classification tasks with predefined ranges for their relevant hyperparameters: elastic net (\texttt{glmnet} \citep{glmnet})\todo{PP: Zitierungen stören den Textfluss}, decision tree (\texttt{rpart}, \citep{rpart}), k-nearest neighbors (\texttt{kknn}, \citep{kknn}), support vector machines (\texttt{svm}, \citep{svm}), random forest (\texttt{ranger}, \citep{ranger}) and gradient boosting (\texttt{xgboost}, \citep{xgboost}). These algorithms cover a wide range of approaches to machine learning. For each algorithm the available hyperparameters are explored in a predefined range (see Table~\ref{tab:parameter}). Some of these hyperparameters are transformed by the function found in column \textit{trafo} to sample from the range non-uniformly. This is an often performed procedure, if e.g. minor changes for bigger values of a hyperparameter are not expected to have a significant impact on the performance of an algorithm.
+To create the dataset the following six supervised machine learning algorithms implemented in R are run on 38 classification tasks with predefined ranges for their relevant hyperparameters: elastic net (\texttt{glmnet} \citep{glmnet})\todo{PP: Zitierungen stören den Textfluss, ist aber ok}, decision tree (\texttt{rpart}, \citep{rpart}), k-nearest neighbors (\texttt{kknn}, \citep{kknn}), support vector machines (\texttt{svm}, \citep{svm}), random forest (\texttt{ranger}, \citep{ranger}) and gradient boosting (\texttt{xgboost}, \citep{xgboost}). These algorithms cover a wide range of approaches to machine learning. For each algorithm the available hyperparameters are explored in a predefined range (see Table~\ref{tab:parameter}). Some of these hyperparameters are transformed by the function found in column \textit{trafo} of Table~\ref{tab:parameter} to sample from the range non-uniformly. This is an often performed procedure, if e.g. minor changes for bigger values of a hyperparameter are not expected to have a significant impact on the performance of an algorithm.
 
 <<parameter, echo = FALSE, results='asis',  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
 library(xtable)
@@ -153,24 +153,24 @@ Following the search paradigm of random search the bot iteratively executes seve
 \item Randomly draw a hyperparameter setting of the chosen algorithm based on the ranges of Table~\ref{tab:parameter}.
 \item Randomly draw one of the $38$ binary classification benchmark datasets from Table~\ref{tab:datasets}.
 \item Load the dataset from cache or download it from OpenML and cache it.
-\item Evaluate the algorithm with the sampled hyperparameters on the selected dataset with 10-fold cross-validation. Consistent cross-validation splits are provided by OpenML.
+\item Evaluate the algorithm with the sampled hyperparameters on the selected dataset with 10-fold cross-validation. Consistent cross-validation splits for each dataset are provided by OpenML.
 \item Upload the benchmark results with hyperparameters, performance measures and time measurements to OpenML. The tag \texttt{mlrRandomBot} is used for identification.
 \end{enumerate}
 
 An advantage of using random search instead of other tuning methods like grid search is that additional experiments can be easily added. One could for example easily increase the hyperparameter range for a specific algorithm or add a new algorithm simply by adding new experiments to the existing ones. Moreover, random search is more efficient than grid search in covering multidimensional hyperparameter spaces and finding optimal hyperparameter settings \citep{Bergstra2012}.
 
-The bot is developed open source and can be found on GitHub (\url{https://github.com/ja-thomas/OMLbots}). To add a new algorithm it has to be included in the file \texttt{R/botSetLearnerParamPairs.R} of the GitHub repository with with its hyperparameter ranges. The main function \texttt{runBot} executes the bot with a predefined number of experiments.
+The bot is developed open source and can be found on GitHub (\url{https://github.com/ja-thomas/OMLbots}). To add a new algorithm it has to be included in the file \texttt{R/botSetLearnerParamPairs.R} of the GitHub repository with its hyperparameter ranges. The main function \texttt{runBot} executes the bot with a predefined number of experiments.
 The bot is based on the R packages \texttt{mlr} \citep{Bischl2016} and \texttt{OpenML} \citep{Casalicchio2017} and written in modular form such that it can be extended with new sampling strategies for hyperparameters, algorithms and datasets in the future.
 
 After more than $6$ million benchmark experiments the results of the bot are downloaded from OpenML.
 Since on dataset $4135$ all algorithms except of \texttt{rpart} and \texttt{ranger} crashed, it is excluded and $38$ datasets remain.
 
-For each of the algorithms $500000$ experiments are used to obtain a final dataset.
-The experiments are chosen by the following procedure: for each algorithm, a threshold $B$ is set (see below) and, if the number of results for a dataset exceeds $B$, we draw randomly $B$ of the results obtained for this algorithm and this dataset. The threshold value $B$ is chosen for each algorithm separately to exactly obtain 500000 results for each algorithm.
+For each of the algorithms $500000$ experiments are used to obtain the final dataset.
+The experiments are chosen by the following procedure: For each algorithm, a threshold $B$ is set (see below) and, if the number of results for a dataset exceeds $B$, we draw randomly $B$ of the results obtained for this algorithm and this dataset. The threshold value $B$ is chosen for each algorithm separately to exactly obtain in total 500000 results for each algorithm.
 
 For \texttt{kknn} we only execute 30 experiments per dataset because this number of experiments is high enough
 to cover the hyperparameter space (that only consists of the parameter $k$ for $k \in \{1,...,30\}$) appropriately, resulting in 1140 experiments.
-In total this results in around 2.5 million experiments.
+All in all this results in around 2.5 million experiments.
 
 The distribution of the runs on the datasets and algorithms can be seen in table~\ref{tab:datasets2}.
 
@@ -204,9 +204,9 @@ Possible applications are:
 \item Measure and investigate differences between algorithms.
 \item Improve hyperparameter tuning algorithms:
 \begin{itemize}
-\item Measure the tunability of algorithms and find out which parameters should be tuned \citep[see][]{Probst20182}
+\item Measure the tunability of algorithms and find out which parameters should be tuned \citep[see][]{Probst20182}.
 \item Get priors for tuning algorithms to search important regions of the
-hyperparameter space with higher probability. \citep[see][]{Rijn2017, Probst20182}
+hyperparameter space with higher probability \citep[see][]{Rijn2017, Probst20182}.
 \end{itemize}
 \item Train models based on dataset characteristics and propose hyperparameter settings that perform good on a new dataset.
 \end{itemize}
