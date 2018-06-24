@@ -1,15 +1,9 @@
-\begin{thebibliography}{20}
+\begin{thebibliography}{19}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
-
-\bibitem[Bergstra and Bengio(2012)]{Bergstra2012}
-J.~Bergstra and Y.~Bengio.
-\newblock Random search for hyper-parameter optimization.
-\newblock \emph{Journal of Machine Learning Research}, 13\penalty0
-  (Feb):\penalty0 281--305, 2012.
 
 \bibitem[Bischl et~al.(2016)Bischl, Lang, Kotthoff, Schiffner, Richter,
   Studerus, Casalicchio, and Jones]{Bischl2016}
@@ -78,12 +72,24 @@ D.~Kühn, P.~Probst, J.~Thomas, and B.~Bischl.
 \newblock URL
   \url{https://figshare.com/articles/OpenML_R_Bot_Benchmark_Data_final_subset_/5882230}.
 
+\bibitem[Lang et~al.(2017)Lang, Bischl, and Surmann]{Lang2017}
+M.~Lang, B.~Bischl, and D.~Surmann.
+\newblock batchtools: Tools for {R} to work on batch systems.
+\newblock \emph{The Journal of Open Source Software}, 2\penalty0 (10), 2017.
+
 \bibitem[Meyer et~al.(2017)Meyer, Dimitriadou, Hornik, Weingessel, and h]{svm}
 D.~Meyer, E.~Dimitriadou, K.~Hornik, A.~Weingessel, and F.~L. h.
 \newblock \emph{e1071: Misc Functions of the Department of Statistics,
   Probability Theory Group (Formerly: E1071), TU Wien}, 2017.
 \newblock URL \url{https://CRAN.R-project.org/package=e1071}.
 \newblock R package version 1.6-8.
+
+\bibitem[Probst et~al.(2018)Probst, Bischl, and Boulesteix]{Probst2018}
+P.~Probst, B.~Bischl, and A.-L. Boulesteix.
+\newblock Tunability: Importance of hyperparameters of machine learning
+  algorithms.
+\newblock \emph{ArXiv preprint arXiv:1802.09596}, 2018.
+\newblock URL \url{https://arxiv.org/abs/1802.09596}.
 
 \bibitem[Reif(2012)]{Reif2012ACD}
 M.~Reif.
@@ -105,12 +111,6 @@ M.~R. {Smith}, A.~{White}, C.~{Giraud-Carrier}, and T.~{Martinez}.
 \newblock \emph{ArXiv preprint arXiv:1405.7292}, 2014.
 \newblock URL \url{https://arxiv.org/abs/1405.7292}.
 
-\bibitem[Snoek et~al.(2012)Snoek, Larochelle, and Adams]{snoek2012practical}
-J.~Snoek, H.~Larochelle, and R.~P. Adams.
-\newblock Practical bayesian optimization of machine learning algorithms.
-\newblock In \emph{Advances in neural information processing systems}, pages
-  2951--2959, 2012.
-
 \bibitem[Therneau and Atkinson(2018)]{rpart}
 T.~Therneau and B.~Atkinson.
 \newblock \emph{rpart: Recursive Partitioning and Regression Trees}, 2018.
@@ -128,11 +128,6 @@ J.~N. {van Rijn} and F.~{Hutter}.
 J.~Vanschoren, J.~N. van Rijn, B.~Bischl, and L.~Torgo.
 \newblock {{OpenML}: Networked Science in Machine Learning}.
 \newblock \emph{SIGKDD Explorations}, 15\penalty0 (2):\penalty0 49--60, 2013.
-
-\bibitem[Wolpert(2002)]{Wolpert2001}
-D.~H. Wolpert.
-\newblock The supervised learning no-free-lunch theorems.
-\newblock In \emph{Soft computing and industry}, pages 25--42. Springer, 2002.
 
 \bibitem[Wright and Ziegler(2017)]{ranger}
 M.~N. Wright and A.~Ziegler.
