@@ -1,0 +1,42 @@
+
+- wir sollten checkpointing / mran benutzen, damit klar ist welche paket versionen laufen gelassen wurden.
+
+- konzeptionelles problem: es wäre toll, wenn man keine ranges / trafos für params angeben müsste 
+  mindestens sind die ranges teilweise zu kleine gewählt.
+  und mindestens mehr hyperpars für einezelne algos
+
+- kknn ist scheiße mit den 30 results. hier hätte man einfach mehr params nehmen können
+
+- der bot muss viel bessser programmiert werden. 
+-- die tasks müssen ein einer KONFIG file definiert werden. aktuell können die sich einfach ändern.
+
+- zeitergebnisse bringen nur was wenn wir auf gleicher hardware rechnen. kann man das sicherstellen?
+
+- wir wollen eine shiny app so dass man die ergebnisse des bots sich ansehen kann
+
+- nicht OpenML100 sondern CC18 nutzen
+
+- errorhandling überprüfen. was passiert wenn ein run absürzt?
+
+- was machen wir ein algo mehr parameter hat als ein anderer? wie stellen wir sicher dass jeder "fair"
+  viele runs hat? vielleicht sollte man eher drauf achten ob das modell "genug" gelernt hat?
+
+- wir sollten auch multiclass machen
+
+- wir sollten auch regression machen
+
+
+surrogate modelle als ein sinnvoles einzelnes projekte definieren
+
+- für jedes szenario kann man ein anderes surrogat nehmen? einfach das nehmen was am besten klappt.
+  warum sollte es immer ein RF sein?
+
+- GPs als surroagte auch zulassen. gerne mit dummy coding
+
+- die suorgate modelle müssen sauber publiziert werden, digital publiziert
+
+- errorhandling überprüfen. was passiert wenn ein run abgestürzt ist?
+
+
+
+ 
