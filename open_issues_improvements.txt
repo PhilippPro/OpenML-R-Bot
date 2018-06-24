@@ -21,6 +21,10 @@
 - was machen wir ein algo mehr parameter hat als ein anderer? wie stellen wir sicher dass jeder "fair"
   viele runs hat? vielleicht sollte man eher drauf achten ob das modell "genug" gelernt hat?
 
+- wir sollten auch multiclass machen
+
+- wir sollten auch regression machen
+
 
 surrogate modelle als ein sinnvoles einzelnes projekte definieren
 
