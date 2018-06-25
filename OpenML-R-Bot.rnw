@@ -92,13 +92,26 @@
 \usepackage{listings}
 \usepackage{adjustbox}
 \usepackage{setspace}
+\usepackage{authblk}
 
 \usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
 \title{Automatic Exploration of Machine Learning Experiments on OpenML}
-\author{by Daniel Kühn*, Philipp Probst*, Janek Thomas and Bernd Bischl}
+%\author{by Daniel Kühn*, Philipp Probst*, Janek Thomas and Bernd Bischl}
+
+
+\author[1]{Daniel Kühn*}
+\author[2]{Philipp Probst*}
+\author[2]{Janek Thomas}
+\author[2]{Bernd Bischl}
+%\ead{bernd\_bischl@gmx.net}
+%\author[lmu]{Janek Thomas}
+% \ead{janek.thomas@stat.uni-muenchen.de}
+\affil[1]{Versicherung}
+\affil[2]{Ludwig-Maximilians-Universit\"at M\"unchen, Germany}
+%\affil[ ]{philipp\_probst@gmx.de}
 
 \maketitle
 
@@ -246,8 +259,6 @@ The bot is developed open source in R and can be found on GitHub\footnote{\url{h
 The bot is based on the R packages \texttt{mlr} \citep{Bischl2016} and \texttt{OpenML} \citep{Casalicchio2017} and written in modular form such that it can be extended with new sampling strategies for hyperparameters, algorithms and datasets in the future. Parallelization was performed with R package \texttt{batchtools} \citep{Lang2017}.
 
 After more than $6$ million benchmark experiments the results of the bot are downloaded from OpenML.
-Since on dataset $4135$ all algorithms except of \texttt{rpart} and \texttt{ranger} crashed, it is excluded and $37$ datasets remain.
-
 For each of the algorithms $500000$ experiments are used to obtain the final dataset.
 The experiments are chosen by the following procedure: For each algorithm, a threshold $B$ is set (see below) and, if the number of results for a dataset exceeds $B$, we draw randomly $B$ of the results obtained for this algorithm and this dataset. The threshold value $B$ is chosen for each algorithm separately to exactly obtain in total 500000 results for each algorithm.
 
