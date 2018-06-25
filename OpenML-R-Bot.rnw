@@ -1,7 +1,7 @@
 % COMMENT: The code that generates the file and tables is available at https://github.com/PhilippPro/OpenML-R-Bot/ in the file OpenML-R-Bot.rnw
 %
 
-\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+\documentclass[authoryear]{elsarticle}\usepackage[]{graphicx}\usepackage[]{color}
 %% maxwidth is the original width if it is less than linewidth
 %% otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
@@ -92,7 +92,7 @@
 \usepackage{listings}
 \usepackage{adjustbox}
 \usepackage{setspace}
-\usepackage{authblk}
+%\usepackage{authblk}
 
 \usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -103,15 +103,15 @@
 
 
 \author[1]{Daniel Kühn*}
-\author[2]{Philipp Probst*}
-\author[2]{Janek Thomas}
-\author[2]{Bernd Bischl}
-%\ead{bernd\_bischl@gmx.net}
-%\author[lmu]{Janek Thomas}
-% \ead{janek.thomas@stat.uni-muenchen.de}
-\affil[1]{Versicherung}
-\affil[2]{Ludwig-Maximilians-Universit\"at M\"unchen, Germany}
-%\affil[ ]{philipp\_probst@gmx.de}
+\ead{daniel.kuehn.87@gmail.com}
+\author[1]{Philipp Probst*}
+\ead{philipp\_probst@gmx.de}
+\author[1]{Janek Thomas}
+\ead{janek.thomas@stat.uni-muenchen.de}
+\author[1]{Bernd Bischl}
+\ead{bernd\_bischl@gmx.net}
+
+\address[1]{Ludwig-Maximilians-Universit\"at M\"unchen, Germany}
 
 \maketitle
 
