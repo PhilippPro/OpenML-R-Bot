@@ -283,9 +283,8 @@ The results of the benchmark can be accessed in different ways:
 
 \begin{itemize}
 \item The easiest way to access them is to go to the figshare repository \citep{Kuehn2018} and download the \texttt{.csv} files. For each algorithm there is a csv file that contains a row for each algorithm run with the columns \texttt{Data\_id}, the hyperparameter settings, the performance measures (auc, accuracy and brier score), the runtime, the scimark reference runtime and some characteristics of the dataset such as  the number of features or the number of observations.
-
 \item Alternatively the code for the extraction of the data from the nightly database snapshot of OpenML can
-be found here: \url{https://github.com/ja-thomas/OMLbots/blob/master/snapshot_database/database_extraction.R}. With this script all results that were created by the random bot (OpenML-ID 2702) are downloaded.
+be found here: \url{https://github.com/ja-thomas/OMLbots/blob/master/snapshot_database/database_extraction.R}. With this script all results that were created by the random bot (OpenML-ID 2702) are downloaded. (Warning: As the database is updated daily, changes can occur.)
 \end{itemize}
 
 \section{Discussion and potential usage of the results}
