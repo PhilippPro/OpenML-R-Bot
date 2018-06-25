@@ -115,9 +115,6 @@ Each algorithm was cross-validated up to $20.000$ times per dataset with differe
 %The contained algorithms are elastic net (glmnet R-package), decision tree (rpart), k-nearest neighbors (kknn), support vector machine (e1071), random forest (ranger) and extreme gradient boosting (xgboost).
 \end{abstract}
 
-\todo{BB: document header for code??; PP: Done}
-
-
 \section{Introduction}
 
 When applying machine learning algorithms on real world datasets, users have to choose from a large selection of different algorithms with many of them offering a set of hyperparameters to control algorithmic performance. 
@@ -239,7 +236,7 @@ then transform, if a transformation function is given.
 \item Evaluate algorithm $A$ with configuration $\theta$ on task $T$, with associated 10-fold cross-validation from OpenML. 
 \item Upload run results to OpenML, including hyperparameter configuration and time measurements.
 \item OpenML now calculates various performance metrics for the uploaded cross-validated predictions.
-\item The User Id of the bot (2702)  and the tag \texttt{mlrRandomBot} is used for identification. 
+\item The OpenML-ID of the bot (2702)  and the tag \texttt{mlrRandomBot} is used for identification. 
 \end{enumerate}
 
 A clear advantage of random sampling is that all bot runs are completely independent of each other, making all experiments embarrassingly parallel. 
@@ -274,18 +271,10 @@ tab = tasks[, c("Data_id", "Task_id", "glmnet", "rpart", "kknn", "svm", "ranger"
 The results of the benchmark can be accessed in different ways:
 
 \begin{itemize}
-\item The easiest way to access them is to go to the figshare repository \citep{Kuehn2018} and download the \texttt{.csv} files or the \texttt{.RData} file. \todo{PP: Format ändern auf feather (?) und auf OpenML hochladen (?); PP: morgen}
-\todo{BB: Bitte nur CSV auf figshare haben; PP: morgen}
+\item The easiest way to access them is to go to the figshare repository \citep{Kuehn2018} and download the \texttt{.csv} files. For each algorithm there is a csv file that contains a row for each algorithm run with the columns \texttt{Data\_id}, the hyperparameter settings, the performance measures (auc, accuracy and brier score), the runtime, the scimark reference runtime and some characteristics of the dataset such as  the number of features or the number of observations.  
 
-For each algorithm there is a csv file that contains a row for each algorithm run with the columns \texttt{Data\_id}, the hyperparameter settings, the performance measures (auc, accuracy and brier score), the runtime, the scimark reference runtime and some characteristics of the dataset such as  the number of features or the number of observations.  
-
-\todo{BB: wenigstens den anfang einer file als bsp dann mail zeigend oder so}
-
-
-\todo{BB: bitte angeben wo das format der CSV dokumentiert ist, das kann gerne auch hier im paper sein. vermutlich am besten.; PP: morgen}
 \item Alternatively the code for the extraction of the data from the nightly database snapshot of OpenML can
-be found here: \url{https://github.com/ja-thomas/OMLbots/blob/master/snapshot_database/database_extraction.R}. With this script all actual results that were created by the random bot (OpenML-ID 2702) are downloaded. 
-\todo{BB: sicher dass sich das nie ändert? da muss man mndestens vor den gefahren warnen!}
+be found here: \url{https://github.com/ja-thomas/OMLbots/blob/master/snapshot_database/database_extraction.R}. With this script all results that were created by the random bot (OpenML-ID 2702) are downloaded. 
 \end{itemize}
 
 \section{Discussion and potential usage of the results}
@@ -309,12 +298,6 @@ So simply switching to Bayesian optimization or related search techniques might 
 \end{itemize}
 
 %A potential weakness of this dataset is that the dimension of hyperparameter spaces for example for \texttt{xgboost} can be very high and the number of experiments is not sufficient to explore the space appropriately, especially in regions in which very high performance can be achieved. 
-
-\todo{PP: In Zukunft mit checkpoint arbeiten}
-
-\todo{BB: mindestens das smith whithe paper ist offziell veroeffentlicht? bitte checken und ändern. und jans paper ist auch raus?}
-
-
 
 \bibliography{bot}
 
