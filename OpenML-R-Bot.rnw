@@ -1,7 +1,7 @@
 % COMMENT: The code that generates the file and tables is available at https://github.com/PhilippPro/OpenML-R-Bot/ in the file OpenML-R-Bot.rnw
 %
 
-\documentclass[authoryear]{elsarticle}\usepackage[]{graphicx}\usepackage[]{color}
+\documentclass[authoryear]{article}\usepackage[]{graphicx}\usepackage[]{color}
 %% maxwidth is the original width if it is less than linewidth
 %% otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
@@ -113,7 +113,7 @@
 
 \address[1]{Ludwig-Maximilians-Universit\"at M\"unchen, Germany}
 
-\maketitle
+
 
 \begin{abstract}
 Understanding the influence of hyperparameters on the performance of a machine learning algorithm is an important scientific topic in itself and can help to improve automatic hyperparameter tuning procedures.
@@ -127,6 +127,8 @@ Each algorithm was cross-validated up to $20.000$ times per dataset with differe
 
 %The contained algorithms are elastic net (glmnet R-package), decision tree (rpart), k-nearest neighbors (kknn), support vector machine (e1071), random forest (ranger) and extreme gradient boosting (xgboost).
 \end{abstract}
+
+\maketitle
 
 \section{Introduction}
 
@@ -238,11 +240,14 @@ The datasets and their respective characteristics can be found in Table~\ref{tab
 
 \section{Random Experimentation Bot}
 
-To conduct a large number of of experiments a bot was implemented to automatically plan and execute runs, which follows the paradigm of random search.
-The bot iteratively executes these steps, :
+To conduct a large number of experiments a bot was implemented to automatically plan and execute runs, following the paradigm of random search.
+The bot iteratively executes these steps: 
+
+\newpage
+
 \begin{enumerate}
-\item Randomly sample a task $T$ (with an associated data set) from Table~\ref{tab:datasets}
-\item Randomly sample one ML algorithm $A$
+\item Randomly sample a task $T$ (with an associated data set) from Table~\ref{tab:datasets}.
+\item Randomly sample one ML algorithm $A$.
 \item Randomly sample a hyperparameter setting $\theta$ of algorithm $A$, uniformly from the ranges specified in Table~\ref{tab:parameter},
 then transform, if a transformation function is given.
 \item Obtain task $T$ (and dataset) from OpenML and store it locally.
@@ -270,7 +275,7 @@ The distribution of the runs on the datasets and algorithms is displayed in Tabl
 
 <<tbl_results, echo = FALSE, results='asis',  fig.pos='htb!' , message = FALSE, fig.lp="fig:">>=
 tab = tasks[, c("Data_id", "Task_id", "glmnet", "rpart", "kknn", "svm", "ranger", "xgboost")]
-  tab = cbind(tab, rowSums(tab[,2:7]))
+  tab = cbind(tab, rowSums(tab[,3:8]))
   tab = rbind(tab, colSums(tab))
   tab[nrow(tab),1] = "Total"
   colnames(tab)[ncol(tab)] = "Total"
@@ -282,9 +287,9 @@ tab = tasks[, c("Data_id", "Task_id", "glmnet", "rpart", "kknn", "svm", "ranger"
 The results of the benchmark can be accessed in different ways:
 
 \begin{itemize}
-\item The easiest way to access them is to go to the figshare repository \citep{Kuehn2018} and download the \texttt{.csv} files. For each algorithm there is a csv file that contains a row for each algorithm run with the columns \texttt{Data\_id}, the hyperparameter settings, the performance measures (auc, accuracy and brier score), the runtime, the scimark reference runtime and some characteristics of the dataset such as  the number of features or the number of observations.
+\item The easiest way to access them is to go to the figshare repository \citep{Kuehn2018} and to download the \texttt{.csv} files. For each algorithm there is a csv file that contains a row for each algorithm run with the columns \texttt{Data\_id}, the hyperparameter settings, the performance measures (auc, accuracy and brier score), the runtime, the scimark reference runtime and some characteristics of the dataset such as  the number of features or the number of observations.
 \item Alternatively the code for the extraction of the data from the nightly database snapshot of OpenML can
-be found here: \url{https://github.com/ja-thomas/OMLbots/blob/master/snapshot_database/database_extraction.R}. With this script all results that were created by the random bot (OpenML-ID 2702) are downloaded. (Warning: As the database is updated daily, changes can occur.)
+be found here: \url{https://github.com/ja-thomas/OMLbots/blob/master/snapshot_database/database_extraction.R}. With this script all results that were created by the random bot (OpenML-ID 2702) are downloaded and the final dataset is created. (Warning: As the OpenML database is updated daily, changes can occur.)
 \end{itemize}
 
 \section{Discussion and potential usage of the results}
@@ -292,10 +297,10 @@ be found here: \url{https://github.com/ja-thomas/OMLbots/blob/master/snapshot_da
 The presented data can be used to study the effect and influence of hyperparameter setting on performance in various ways.
 Possible applications are:
 \begin{itemize}
-\item Obtain defaults for ML algorithm that work well across many datasets \citep{Probst2018}.
-\item Measuring the importance of hyperparameters, to investigate which should be tuned \citep[see][]{Rijn2017, Probst2018}.
-\item Obtain ranges or priors of tuning parameters to focus on important regions of the search space \citep[see][]{Rijn2017, Probst2018}.
-\item Meta-Learning
+\item Obtaining defaults for ML algorithm that work well across many datasets \citep{Probst2018};
+\item Measuring the importance of hyperparameters, to investigate which should be tuned \citep[see][]{Rijn2017, Probst2018};
+\item Obtaining ranges or priors of tuning parameters to focus on important regions of the search space \citep[see][]{Rijn2017, Probst2018};
+\item Meta-Learning;
 \item Investigating, debugging and improving the robustness of algorithms.
 \end{itemize}
 
@@ -308,6 +313,8 @@ So simply switching to Bayesian optimization or related search techniques might 
 \end{itemize}
 
 %A potential weakness of this dataset is that the dimension of hyperparameter spaces for example for \texttt{xgboost} can be very high and the number of experiments is not sufficient to explore the space appropriately, especially in regions in which very high performance can be achieved.
+
+\section*{References}
 
 \bibliography{bot}
 
