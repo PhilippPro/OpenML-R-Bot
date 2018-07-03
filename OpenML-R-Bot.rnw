@@ -1,17 +1,15 @@
 % COMMENT: The code that generates the file and tables is available at https://github.com/PhilippPro/OpenML-R-Bot/ in the file OpenML-R-Bot.rnw
 %
 
-\documentclass[authoryear]{article}\usepackage[]{graphicx}\usepackage[]{color}
+\documentclass[authoryear]{elsarticle}\usepackage[]{graphicx}\usepackage[]{color}
 %% maxwidth is the original width if it is less than linewidth
 %% otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
-\def\maxwidth{ %
-  \ifdim\Gin@nat@width>\linewidth
-    \linewidth
-  \else
-    \Gin@nat@width
-  \fi
-}
+\def\ps@pprintTitle{%
+ \let\@oddhead\@empty
+ \let\@evenhead\@empty
+ \def\@oddfoot{}%
+ \let\@evenfoot\@oddfoot}
 \makeatother
 
 % \definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
