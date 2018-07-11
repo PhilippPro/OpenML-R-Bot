@@ -12,7 +12,6 @@ B.~Bischl, M.~Lang, L.~Kotthoff, J.~Schiffner, J.~Richter, E.~Studerus,
 \newblock mlr: Machine learning in {R}.
 \newblock \emph{Journal of Machine Learning Research}, 17\penalty0
   (170):\penalty0 1--5, 2016.
-\newblock URL \url{http://jmlr.org/papers/v17/15-066.html}.
 
 \bibitem[{Bischl} et~al.(2017){Bischl}, {Casalicchio}, {Feurer}, {Hutter},
   {Lang}, {Mantovani}, {van Rijn}, and {Vanschoren}]{Bischl2017}
@@ -37,7 +36,6 @@ T.~Chen and C.~Guestrin.
 \newblock In \emph{Proceedings of the 22nd ACM SIGKDD International Conference
   on Knowledge Discovery and Data Mining}, KDD '16, pages 785--794, New York,
   NY, USA, 2016. ACM.
-\newblock ISBN 978-1-4503-4232-2.
 
 \bibitem[Claesen and Moor(2015)]{Claesen2015}
 M.~Claesen and B.~D. Moor.
@@ -103,13 +101,13 @@ K.~Schliep and K.~Hechenbichler.
 \newblock URL \url{https://CRAN.R-project.org/package=kknn}.
 \newblock R package version 1.3.1.
 
-\bibitem[{Smith} et~al.(2014){Smith}, {White}, {Giraud-Carrier}, and
-  {Martinez}]{Smith2014}
-M.~R. {Smith}, A.~{White}, C.~{Giraud-Carrier}, and T.~{Martinez}.
-\newblock {An Easy to Use Repository for Comparing and Improving Machine
-  Learning Algorithm Usage}.
-\newblock \emph{ArXiv preprint arXiv:1405.7292}, 2014.
-\newblock URL \url{https://arxiv.org/abs/1405.7292}.
+\bibitem[Smith et~al.(2014)Smith, White, Giraud-Carrier, and
+  Martinez]{Smith2014}
+M.~R. Smith, A.~White, C.~Giraud-Carrier, and T.~Martinez.
+\newblock An easy to use repository for comparing and improving machine
+  learning algorithm usage.
+\newblock In \emph{Meta-Learning and algorithm selection workshop at ECAI
+  2014}, page~41, 2014.
 
 \bibitem[Therneau and Atkinson(2018)]{rpart}
 T.~Therneau and B.~Atkinson.
