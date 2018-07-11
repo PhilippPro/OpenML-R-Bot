@@ -214,7 +214,7 @@ The datasets and their respective characteristics can be found in Table~\ref{tab
   nr_results = nr_results[,which(colnames(nr_results) %in% sort(tasks$Data_id))]
   # delete these results from the database?
   # musk with easy perfect classification and two test datasets
-  tasks = tasks[which(sort(tasks$Data_id) %in% colnames(nr_results)), ]
+  tasks = tasks[which(tasks$Data_id %in% colnames(nr_results)), ]
   # no results for some datasets
   tasks = tasks[order(tasks$Data_id),]
   #tasks$Data_id == colnames(nr_results)
