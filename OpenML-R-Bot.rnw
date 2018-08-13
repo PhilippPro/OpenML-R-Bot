@@ -212,6 +212,7 @@ The datasets and their respective characteristics can be found in Table~\ref{tab
   library(OpenML)
   tasks = listOMLTasks(number.of.classes = 2L, number.of.missing.values = 0, tag = "study_14", estimation.procedure = "10-fold Crossvalidation", status = "active")
   tasks2 = listOMLTasks(number.of.classes = 2L, number.of.missing.values = 0, tag = "study_14", estimation.procedure = "10-fold Crossvalidation", status = "deactivated")
+  tasks2 = tasks2[, -ncol(tasks2)]
   tasks = rbind(tasks, tasks2)
   tasks = tasks[, c("data.id", "task.id", "name", "number.of.instances", "number.of.features", "majority.class.size",
     "number.of.numeric.features", "number.of.symbolic.features")]
