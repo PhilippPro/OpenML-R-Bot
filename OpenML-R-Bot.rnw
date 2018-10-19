@@ -1,7 +1,7 @@
 % COMMENT: The code that generates the file and tables is available at https://github.com/PhilippPro/OpenML-R-Bot/ in the file OpenML-R-Bot.rnw
 %
 
-\documentclass[authoryear]{elsarticle}\usepackage[]{graphicx}\usepackage[]{color}
+\documentclass[authoryear, hidelinks]{elsarticle}
 %% maxwidth is the original width if it is less than linewidth
 %% otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
@@ -11,6 +11,26 @@
  \def\@oddfoot{}%
  \let\@evenfoot\@oddfoot}
 \makeatother
+
+\usepackage{natbib}
+\bibliographystyle{abbrvnat}
+\pdfoutput=1
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=false,
+    linkcolor=black,
+    citecolor=black,
+    filecolor=black,
+    urlcolor=black,
+}
+%
+%\hypersetup{%
+%  colorlinks=true,
+%  breaklinks=true,
+%  urlcolor=blue,
+%  linkcolor=blue,
+%  citecolor=blue,
+%}
 
 % \definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
 % \newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
@@ -59,17 +79,19 @@
 \usepackage{amsthm,amsmath,amssymb,amstext}
 \usepackage{booktabs}
 \usepackage{array}
+\usepackage{url}
 
-\usepackage{natbib}
-\bibliographystyle{abbrvnat}
-\usepackage{hyperref}
-\hypersetup{%
-  colorlinks=true,
-  breaklinks=true,
-  urlcolor=blue,
-  linkcolor=blue,
-  citecolor=blue,
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
 }
+\makeatother
+
+
 
 \usepackage{etoolbox}
 \appto\UrlBreaks{\do\a\do\b\do\c\do\d\do\e\do\f\do\g\do\h\do\i\do\j
@@ -81,6 +103,7 @@
 \usepackage{caption}
 \usepackage{tabularx}
 \usepackage{graphicx}
+\usepackage{color}
 \usepackage{booktabs}
 \usepackage{lscape}
 \usepackage{placeins}
@@ -151,7 +174,7 @@ While similar meta-datasets have been created in the past, we were not able to a
 \citet{Smith2014} provides a repository with Weka-based machine learning experiments on 72 data sets, 9 machine learning algorithms, 10 hyperparameter settings for each algorithm, and several meta-features of each data set.
 \citet{Reif2012ACD} created a meta-dataset based on machine learning experiments on 83 datasets, 6 classification algorithms, and 49 meta features.
 
-In this paper, we describe our experimental setup, to specify how our meta-dataset is created by running random machine learning experiments through the OpenML platform \citep{OpenML2013} and how to access our results.
+In this paper, we describe our experimental setup, specify how our meta-dataset is created by running random machine learning experiments through the OpenML platform \citep{OpenML2013} and explain how to access our results.
 
 \section{Considered ML data sets, algorithms and hyperparameters}
 
@@ -212,7 +235,7 @@ The datasets and their respective characteristics can be found in Table~\ref{tab
   library(OpenML)
   tasks = listOMLTasks(number.of.classes = 2L, number.of.missing.values = 0, tag = "study_14", estimation.procedure = "10-fold Crossvalidation", status = "active")
   tasks2 = listOMLTasks(number.of.classes = 2L, number.of.missing.values = 0, tag = "study_14", estimation.procedure = "10-fold Crossvalidation", status = "deactivated")
-  tasks2 = tasks2[, -ncol(tasks2)]
+  #tasks2 = tasks2[, -ncol(tasks2)]
   tasks = rbind(tasks, tasks2)
   tasks = tasks[, c("data.id", "task.id", "name", "number.of.instances", "number.of.features", "majority.class.size",
     "number.of.numeric.features", "number.of.symbolic.features")]
@@ -236,13 +259,12 @@ The datasets and their respective characteristics can be found in Table~\ref{tab
   print(xtable(tab, caption = "Included datasets and respective characteristics. \\textit{n} are the number of observations, \\textit{p} the number of features, \\textit{maj.class} the percentage of observations in the largest class, \\textit{numFeat} the number of numeric features and \\textit{catFeat} the number of categorical features.", digits = 2, label = "tab:datasets"), digits = 0, include.rownames=FALSE, size = "scriptsize")
 @
 
+\newpage
 
 \section{Random Experimentation Bot}
 
 To conduct a large number of experiments a bot was implemented to automatically plan and execute runs, following the paradigm of random search.
 The bot iteratively executes these steps: 
-
-\newpage
 
 \begin{enumerate}
 \item Randomly sample a task $T$ (with an associated data set) from Table~\ref{tab:datasets}.
@@ -281,6 +303,8 @@ tab = tasks[, c("Data_id", "Task_id", "glmnet", "rpart", "kknn", "svm", "ranger"
 
   print(xtable(tab, caption = "Number of experiments for each combination of dataset and algorithm.", digits = 0, label = "tab:datasets2"), digits = 0, include.rownames=FALSE, size = "scriptsize", hline.after = c(-1, 0, nrow(tab)-1, nrow(tab)))
 @
+
+\newpage
 
 \section{Access to the results}
 The results of the benchmark can be accessed in different ways:
